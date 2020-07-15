@@ -133,7 +133,7 @@ EOF
 # wget "http://r0k.us/graphics/kodak/kodak/kodim24.png"
 
 wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/dachshund.png"
-# wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/rabbit_vectorized.png"
+wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/rabbit_vectorized.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/chameleon.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/sheep-coffee.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/monkey-riding-a-mammoth.png"
