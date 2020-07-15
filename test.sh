@@ -329,7 +329,7 @@ starttimer() {
   s=0
   while [ -e "$1" ]
   do
-    echo -ne "$2 $s s\033[0K\r"
+    printf '%s %s s\033[0K\r' "$2" "$s"
     sleep 1
     s=$((s + 1))
   done
