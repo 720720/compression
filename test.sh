@@ -183,17 +183,17 @@ include guetzli
 guetzli_href="https://github.com/google/guetzli"
 guetzli_version="cb5e4a8"
 
-include jpeg-recompress
-jpegrecompress_href="https://github.com/danielgtaylor/jpeg-archive"
-jpegrecompress_version="$(jpeg-recompress -V)"
+# include jpeg-recompress
+# jpegrecompress_href="https://github.com/danielgtaylor/jpeg-archive"
+# jpegrecompress_version="$(jpeg-recompress -V)"
 
-include jpegoptim
-jpegoptim_href="https://github.com/tjko/jpegoptim"
-jpegoptim_version="$(jpegoptim -V | awk 'NR==1{print substr($2,2)}')"
+# include jpegoptim
+# jpegoptim_href="https://github.com/tjko/jpegoptim"
+# jpegoptim_version="$(jpegoptim -V | awk 'NR==1{print substr($2,2)}')"
 
-include jpegtran
-jpegtran_href="http://jpegclub.org/jpegtran/"
-jpegtran_version="$(jpegtran -version 2>&1 | awk '{print $3}')"
+# include jpegtran
+# jpegtran_href="http://jpegclub.org/jpegtran/"
+# jpegtran_version="$(jpegtran -version 2>&1 | awk '{print $3}')"
 
 include mozjpeg-cjpeg
 mozjpeg_href="https://github.com/mozilla/mozjpeg"
@@ -222,9 +222,9 @@ include oxipng
 oxipng_href="https://github.com/shssoichiro/oxipng"
 oxipng_version="$(oxipng -V | awk '{print $2}')"
 
-include pingo
-pingo_href="https://css-ig.net/pingo"
-pingo_version="$(pingo -V | awk '/pingo v/{print substr($2,2)}')"
+# include pingo
+# pingo_href="https://css-ig.net/pingo"
+# pingo_version="$(pingo -V | awk '/pingo v/{print substr($2,2)}')"
 
 include pngcrush
 pngcrush_href="https://pmt.sourceforge.io/pngcrush/"
@@ -246,9 +246,9 @@ include pngwolf
 pngwolf_href="https://github.com/jibsen/pngwolf-zopfli"
 pngwolf_version="$(pngwolf --version | awk 'NR==1{print $2}')"
 
-include truepng
-truepng_href="http://x128.ho.ua/pngutils.html"
-truepng_version="$(truepng | awk 'NR==1 {print $2}')"
+# include truepng
+# truepng_href="http://x128.ho.ua/pngutils.html"
+# truepng_version="$(truepng | awk 'NR==1 {print $2}')"
 
 include zopflipng
 zopflipng_href="https://github.com/google/zopfli"
