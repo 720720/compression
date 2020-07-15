@@ -170,7 +170,7 @@ include() {
   do
     if ! command -v "$command" >/dev/null 2>&1
     then
-      echo "$command is not installed" >&2
+      echo "$command is not installed"
       exit 1
     fi
   done
@@ -302,9 +302,9 @@ done
 
 # https://stackoverflow.com/questions/6363441/check-if-a-file-exists-with-wildcard-in-shell-script
 
-if ! ls *.png >/dev/null 2>&1
+if ! ls ./*.png >/dev/null 2>&1
 then
-  echo "no images found" >&2
+  echo "no images found"
   exit 1
 fi
 
@@ -331,7 +331,7 @@ starttimer() {
   do
     echo -ne "$2 $s s\033[0K\r"
     sleep 1
-    ((s++))
+    s=$((s + 1))
   done
 }
 
@@ -369,7 +369,7 @@ start() {
     return
   fi
 
-  if [ "$copy" == "copy" ]
+  if [ "$copy" = "copy" ]
   then
     cp "$input" "$output"
   fi
@@ -553,7 +553,7 @@ newline
 # http://tldp.org/LDP/abs/html/ivr.html
 # http://ahmed.amayem.com/bash-indirect-expansion-exploration/
 
-while IFS=, read image name format size dimensions type colorspace colors depth compression entropy
+while IFS=, read -r image name format size dimensions type colorspace colors depth compression entropy
 do
   tick
 
@@ -569,9 +569,9 @@ do
   do
     touch out.txt
 
-    while read input
+    while read -r input
     do
-      awk '/^\S/{print}' test.txt | while IFS=, read compressor options arguments
+      awk '/^\S/{print}' test.txt | while IFS=, read -r compressor options arguments
       do
         if echo "$arguments" | grep -qw input && echo "$arguments" | grep -qw output
         then
@@ -590,7 +590,7 @@ do
 
     mv out.txt in.txt
 
-    ((i++))
+    i=$((i + 1))
   done
 
   awk -v FS="," -v OFS="," -v test="$test" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",test}$1==image{for(i=3;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | separate | column -s, -t | colorize
@@ -604,7 +604,7 @@ awk -v FS="," -v OFS="," '{number[$3]=$4;processed[$3]++;if($6>0){compressed[$3]
 awk -v FS="," -v OFS="," '{number[$3]=$4;processed[$3]++;if($6>0){compressed[$3]++};size[$3]+=$5;saving[$3]+=$6;time[$3]+=$7;genomes[$3]+=$8;}END{print "compressor,number,processed,compressed,size,saving,time,genomes";for(i in processed)print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i],genomes[i]|"sort -t, -k6gr -k4g -k7g"}' output.txt | column -s, -t > result.txt
 newline >> result.txt
 
-while IFS=, read image name format size dimensions type colorspace colors depth compression entropy
+while IFS=, read -r image name format size dimensions type colorspace colors depth compression entropy
 do
   printf "image: $image\nname: $name\nformat: $format\nsize: $size\ndimensions: $dimensions\ntype: $type\ncolorspace: $colorspace\ncolors: $colors\ndepth: $depth\ncompression: $compression\nentropy: $entropy\n" >> result.txt
   newline >> result.txt
