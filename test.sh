@@ -179,9 +179,9 @@ include() {
 
 # https://en.wikipedia.org/wiki/JPEG
 
-include guetzli
-guetzli_href="https://github.com/google/guetzli"
-guetzli_version="cb5e4a8"
+# include guetzli
+# guetzli_href="https://github.com/google/guetzli"
+# guetzli_version="cb5e4a8"
 
 # include jpeg-recompress
 # jpegrecompress_href="https://github.com/danielgtaylor/jpeg-archive"
@@ -195,79 +195,79 @@ guetzli_version="cb5e4a8"
 # jpegtran_href="http://jpegclub.org/jpegtran/"
 # jpegtran_version="$(jpegtran -version 2>&1 | awk '{print $3}')"
 
-include mozjpeg-cjpeg
-mozjpeg_href="https://github.com/mozilla/mozjpeg"
-mozjpeg_version="$(mozjpeg-cjpeg -version 2>&1 | awk '{print $3}')"
+# include mozjpeg-cjpeg
+# mozjpeg_href="https://github.com/mozilla/mozjpeg"
+# mozjpeg_version="$(mozjpeg-cjpeg -version 2>&1 | awk '{print $3}')"
 
 
 # https://en.wikipedia.org/wiki/Portable_Network_Graphics
 
-include advdef
-advdef_href="https://github.com/amadvance/advancecomp"
-advdef_version="$(advdef -V | awk '{print substr($2,2)}')"
+# include advdef
+# advdef_href="https://github.com/amadvance/advancecomp"
+# advdef_version="$(advdef -V | awk '{print substr($2,2)}')"
 
-include advpng
-advpng_href="https://github.com/amadvance/advancecomp"
-advpng_version="$(advpng -V | awk '{print substr($2,2)}')"
+# include advpng
+# advpng_href="https://github.com/amadvance/advancecomp"
+# advpng_version="$(advpng -V | awk '{print substr($2,2)}')"
 
-include ect
-ect_href="https://github.com/fhanau/Efficient-Compression-Tool"
-ect_version="$(ect | awk '/Version/{print $2}')"
+# include ect
+# ect_href="https://github.com/fhanau/Efficient-Compression-Tool"
+# ect_version="$(ect | awk '/Version/{print $2}')"
 
-include optipng
-optipng_href="http://optipng.sourceforge.net/"
-optipng_version="$(optipng -V | awk '/OptiPNG version/{print $3}')"
+# include optipng
+# optipng_href="http://optipng.sourceforge.net/"
+# optipng_version="$(optipng -V | awk '/OptiPNG version/{print $3}')"
 
-include oxipng
-oxipng_href="https://github.com/shssoichiro/oxipng"
-oxipng_version="$(oxipng -V | awk '{print $2}')"
+# include oxipng
+# oxipng_href="https://github.com/shssoichiro/oxipng"
+# oxipng_version="$(oxipng -V | awk '{print $2}')"
 
 # include pingo
 # pingo_href="https://css-ig.net/pingo"
 # pingo_version="$(pingo -V | awk '/pingo v/{print substr($2,2)}')"
 
-include pngcrush
-pngcrush_href="https://pmt.sourceforge.io/pngcrush/"
-pngcrush_version="$(pngcrush -version 2>&1 | awk -F, '/pngcrush/{print $1}' | awk -F' ' '{print $2}')"
+# include pngcrush
+# pngcrush_href="https://pmt.sourceforge.io/pngcrush/"
+# pngcrush_version="$(pngcrush -version 2>&1 | awk -F, '/pngcrush/{print $1}' | awk -F' ' '{print $2}')"
 
-include pngoptimizercl
-pngoptimizercl_href="https://github.com/hadrien-psydk/pngoptimizer"
-pngoptimizercl_version="$(pngoptimizercl | awk 'NR==1{print $2}')"
+# include pngoptimizercl
+# pngoptimizercl_href="https://github.com/hadrien-psydk/pngoptimizer"
+# pngoptimizercl_version="$(pngoptimizercl | awk 'NR==1{print $2}')"
 
-include pngout
-pngout_href="http://www.jonof.id.au/kenutils"
-pngout_version="20150319"
+# include pngout
+# pngout_href="http://www.jonof.id.au/kenutils"
+# pngout_version="20150319"
 
-include pngquant
-pngquant_href="https://github.com/kornelski/pngquant"
-pngquant_version="$(pngquant -V | awk '{print $1}')"
+# include pngquant
+# pngquant_href="https://github.com/kornelski/pngquant"
+# pngquant_version="$(pngquant -V | awk '{print $1}')"
 
-include pngwolf
-pngwolf_href="https://github.com/jibsen/pngwolf-zopfli"
-pngwolf_version="$(pngwolf --version | awk 'NR==1{print $2}')"
+# include pngwolf
+# pngwolf_href="https://github.com/jibsen/pngwolf-zopfli"
+# pngwolf_version="$(pngwolf --version | awk 'NR==1{print $2}')"
 
 # include truepng
 # truepng_href="http://x128.ho.ua/pngutils.html"
 # truepng_version="$(truepng | awk 'NR==1 {print $2}')"
 
-include zopflipng
-zopflipng_href="https://github.com/google/zopfli"
-zopflipng_version="64c6f36"
+# include zopflipng
+# zopflipng_href="https://github.com/google/zopfli"
+# zopflipng_version="64c6f36"
 
 
 # https://en.wikipedia.org/wiki/Structural_similarity
 
-include butteraugli
-butteraugli_href="https://github.com/google/butteraugli"
-butteraugli_version="856a4da"
+# include butteraugli
+# butteraugli_href="https://github.com/google/butteraugli"
+# butteraugli_version="856a4da"
 
-include compare
-compare_href="https://www.imagemagick.org/script/compare.php"
-compare_version="$(compare -version | awk 'NR==1 {print $3}')"
+# include compare
+# compare_href="https://www.imagemagick.org/script/compare.php"
+# compare_version="$(compare -version | awk 'NR==1 {print $3}')"
 
-include ssimulacra
-ssimulacra_href="https://github.com/cloudinary/ssimulacra"
-ssimulacra_version="2a830ab"
+# include ssimulacra
+# ssimulacra_href="https://github.com/cloudinary/ssimulacra"
+# ssimulacra_version="2a830ab"
 
 
 # http://netpbm.sourceforge.net/doc/directory.html
