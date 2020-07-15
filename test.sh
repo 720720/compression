@@ -559,7 +559,7 @@ do
 
   touch output.txt
 
-  printf "image: $image\nname: $name\nformat: $format\nsize: $size\ndimensions: $dimensions\ntype: $type\ncolorspace: $colorspace\ncolors: $colors\ndepth: $depth\ncompression: $compression\nentropy: $entropy\n"
+  printf "image: %s\nname: %s\nformat: %s\nsize: %s\ndimensions: %s\ntype: %s\ncolorspace: %s\ncolors: %s\ndepth: %s\ncompression: %s\nentropy: %s\n" "$image" "$name" "$format" "$size" "$dimensions" "$type" "$colorspace" "$colors" "$depth" "$compression" "$entropy"
   newline
 
   echo "$image" > in.txt
@@ -606,7 +606,7 @@ newline >> result.txt
 
 while IFS=, read -r image name format size dimensions type colorspace colors depth compression entropy
 do
-  printf "image: $image\nname: $name\nformat: $format\nsize: $size\ndimensions: $dimensions\ntype: $type\ncolorspace: $colorspace\ncolors: $colors\ndepth: $depth\ncompression: $compression\nentropy: $entropy\n" >> result.txt
+  printf "image: %s\nname: %s\nformat: %s\nsize: %s\ndimensions: %s\ntype: %s\ncolorspace: %s\ncolors: %s\ndepth: %s\ncompression: %s\nentropy: %s\n" "$image" "$name" "$format" "$size" "$dimensions" "$type" "$colorspace" "$colors" "$depth" "$compression" "$entropy" >> result.txt
   newline >> result.txt
   awk -v FS="," -v OFS="," -v test="$test" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",test}$1==image{for(i=3;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | column -s, -t >> result.txt
   newline >> result.txt
