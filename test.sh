@@ -25,7 +25,7 @@ advdef,-z4,output
   advpng,-z1,output
   advpng,-z2,output
   advpng,-z3,output
-advpng,-z4,output
+  advpng,-z4,output
 
   ect,,output
   ect,-1 -s,output
@@ -36,7 +36,7 @@ advpng,-z4,output
   ect,-6 -s,output
   ect,-7 -s,output
   ect,-8 -s,output
-ect,-9 -s,output
+  ect,-9 -s,output
 
   optipng,,-out output input
   optipng,-o1 -strip all,-out output input
@@ -54,7 +54,7 @@ optipng,-o7 -strip all,-out output input
   oxipng,-o4 --strip all,--out output input
   oxipng,-o5 --strip all,--out output input
   oxipng,-o6 --strip all,--out output input
-oxipng,-o6 -Z --strip all,--out output input
+  oxipng,-o6 -Z --strip all,--out output input
 
   pingo,-s1,output
   pingo,-s2,output
@@ -63,15 +63,15 @@ oxipng,-o6 -Z --strip all,--out output input
   pingo,-s5,output
   pingo,-s6,output
   pingo,-s7,output
-pingo,-s8,output
+  pingo,-s8,output
 
-pngoptimizercl,,output
+  pngoptimizercl,,output
 
-pngout,,input output
+  pngout,,input output
 
   pngquant,,-o output input
 
-pngwolf,--verbose-summary --strip-optional,--in=input --out=output
+  pngwolf,--verbose-summary --strip-optional,--in=input --out=output
   pngwolf,--verbose-summary --strip-optional --estimator=libdeflate,--in=input --out=output
   pngwolf,--verbose-summary --strip-optional --estimator=zlib,--in=input --out=output
   pngwolf,--verbose-summary --strip-optional --estimator=zopfli,--in=input --out=output
@@ -88,14 +88,14 @@ pngwolf,--verbose-summary --strip-optional,--in=input --out=output
 
   pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=1 --estimator=zopfli,--in=input --out=output
   pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=10 --estimator=zopfli,--in=input --out=output
-pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=100 --estimator=zopfli,--in=input --out=output
+  pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=100 --estimator=zopfli,--in=input --out=output
   pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=1000 --estimator=zopfli,--in=input --out=output
 
   truepng,,output
-truepng,-o4,output
+  truepng,-o4,output
 
-  zopflipng,,input output
-zopflipng,-m,input output
+zopflipng,,input output
+  zopflipng,-m,input output
   zopflipng,--iterations=10,input output
   zopflipng,--iterations=100,input output
   zopflipng,--iterations=1000,input output
@@ -132,7 +132,7 @@ EOF
 # wget "http://r0k.us/graphics/kodak/kodak/kodim23.png"
 # wget "http://r0k.us/graphics/kodak/kodak/kodim24.png"
 
-# wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/dachshund.png"
+wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/dachshund.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/rabbit_vectorized.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/chameleon.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/sheep-coffee.png"
