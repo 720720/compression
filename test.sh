@@ -17,59 +17,59 @@ test="ssim"
 
 cat > test.txt <<'EOF'
 
-  advdef,-z1,output
-  advdef,-z2,output
-  advdef,-z3,output
-advdef,-z4,output
+  advdef,-z1,input
+  advdef,-z2,input
+  advdef,-z3,input
+advdef,-z4,input
 
-  advpng,-z1,output
-  advpng,-z2,output
-  advpng,-z3,output
-  advpng,-z4,output
+  advpng,-z1,input
+  advpng,-z2,input
+  advpng,-z3,input
+  advpng,-z4,input
 
-  ect,,output
-  ect,-1 -s,output
-  ect,-2 -s,output
-  ect,-3 -s,output
-  ect,-4 -s,output
-  ect,-5 -s,output
-  ect,-6 -s,output
-  ect,-7 -s,output
-  ect,-8 -s,output
-  ect,-9 -s,output
+  ect,,input
+  ect,-1 -s,input
+  ect,-2 -s,input
+  ect,-3 -s,input
+  ect,-4 -s,input
+  ect,-5 -s,input
+  ect,-6 -s,input
+  ect,-7 -s,input
+  ect,-8 -s,input
+  ect,-9 -s,input
 
-optipng,,-out output input
-  optipng,-o1 -strip all,-out output input
-  optipng,-o2 -strip all,-out output input
-  optipng,-o3 -strip all,-out output input
-  optipng,-o4 -strip all,-out output input
-  optipng,-o5 -strip all,-out output input
-  optipng,-o6 -strip all,-out output input
-  optipng,-o7 -strip all,-out output input
+  optipng,,input
+  optipng,-o1,input
+  optipng,-o2,input
+  optipng,-o3,input
+  optipng,-o4,input
+  optipng,-o5,input
+  optipng,-o6,input
+optipng,-o7,input
 
-  oxipng,,--out output input
-  oxipng,-o1 --strip all,--out output input
-  oxipng,-o2 --strip all,--out output input
-  oxipng,-o3 --strip all,--out output input
-  oxipng,-o4 --strip all,--out output input
-  oxipng,-o5 --strip all,--out output input
-  oxipng,-o6 --strip all,--out output input
-  oxipng,-o6 -Z --strip all,--out output input
+  oxipng,,input
+  oxipng,-o1,input
+  oxipng,-o2,input
+  oxipng,-o3,input
+  oxipng,-o4,input
+  oxipng,-o5,input
+  oxipng,-o6,input
+  oxipng,-o6 -Z,input
 
-pingo,-s1,output
-  pingo,-s2,output
-  pingo,-s3,output
-  pingo,-s4,output
-  pingo,-s5,output
-  pingo,-s6,output
-  pingo,-s7,output
-  pingo,-s8,output
+pingo,-s1,input
+  pingo,-s2,input
+  pingo,-s3,input
+  pingo,-s4,input
+  pingo,-s5,input
+  pingo,-s6,input
+  pingo,-s7,input
+  pingo,-s8,input
 
-  pngoptimizercl,,output
+  pngoptimizercl,,input
 
   pngout,,input output
 
-  pngquant,,-o output input
+  pngquant,,input
 
   pngwolf,--verbose-summary --strip-optional,--in=input --out=output
   pngwolf,--verbose-summary --strip-optional --estimator=libdeflate,--in=input --out=output
@@ -91,8 +91,8 @@ pingo,-s1,output
   pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=100 --estimator=zopfli,--in=input --out=output
   pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=1000 --estimator=zopfli,--in=input --out=output
 
-  truepng,,output
-  truepng,-o4,output
+  truepng,,input
+  truepng,-o4,input
 
   zopflipng,,input output
   zopflipng,-m,input output
@@ -390,7 +390,7 @@ start() {
     return
   fi
 
-  if [ "$copy" = "copy" ]
+  if [ "$copy" -eq 1 ]
   then
     cp "$input" "$output"
   fi
@@ -596,9 +596,9 @@ do
       do
         if echo "$arguments" | grep -qw input && echo "$arguments" | grep -qw output
         then
-          copy="nocopy"
+          copy=0
         else
-          copy="copy"
+          copy=1
         fi
 
         output="$(basename "$input" .png)_$(echo "$compressor $options" | tr -d '[ \-=] ').png"
