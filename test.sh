@@ -45,7 +45,7 @@ advdef,-z4,output
   optipng,-o4 -strip all,-out output input
   optipng,-o5 -strip all,-out output input
   optipng,-o6 -strip all,-out output input
-optipng,-o7 -strip all,-out output input
+  optipng,-o7 -strip all,-out output input
 
   oxipng,,--out output input
   oxipng,-o1 --strip all,--out output input
@@ -94,9 +94,9 @@ optipng,-o7 -strip all,-out output input
   truepng,,output
   truepng,-o4,output
 
-zopflipng,,input output
+  zopflipng,,input output
   zopflipng,-m,input output
-  zopflipng,--iterations=10,input output
+zopflipng,--iterations=10,input output
   zopflipng,--iterations=100,input output
   zopflipng,--iterations=1000,input output
 
@@ -133,7 +133,7 @@ EOF
 # wget "http://r0k.us/graphics/kodak/kodak/kodim24.png"
 
 wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/dachshund.png"
-wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/rabbit_vectorized.png"
+# wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/rabbit_vectorized.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/chameleon.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/sheep-coffee.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/monkey-riding-a-mammoth.png"
@@ -552,6 +552,7 @@ newline
 # https://stackoverflow.com/questions/415677/how-to-replace-placeholders-in-a-text-file
 # http://tldp.org/LDP/abs/html/ivr.html
 # http://ahmed.amayem.com/bash-indirect-expansion-exploration/
+# https://stackoverflow.com/questions/399078/what-special-characters-must-be-escaped-in-regular-expressions
 
 while IFS=, read -r image name format size dimensions type colorspace colors depth compression entropy
 do
@@ -580,7 +581,7 @@ do
           copy="copy"
         fi
 
-        output="$(basename "$input" .png)$(echo "$compressor $options" | tr ' ' '_').png"
+        output="$(basename "$input" .png)_$(echo "$compressor $options" | tr -d '[ \-=] ').png"
         arguments="$(echo "$arguments" | sed "s/input/$input/" | sed "s/output/$output/")"
         command="$compressor $options $arguments"
 
