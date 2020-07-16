@@ -345,10 +345,9 @@ stoptimer() {
 # https://unix.stackexchange.com/questions/118433/quoting-within-command-substitution-in-bash
 # https://www.tecmint.com/empty-delete-file-content-linux/
 # https://www.regular-expressions.info/wordboundaries.html
+# https://stackoverflow.com/questions/30224018/imagemagick-compare-exit-code-1-when-spawned-from-node-js-but-exit-code-0-when
 
 start() {
-  set +e
-
   number="$1"
   image="$2"
   compressor="$3"
@@ -414,37 +413,37 @@ start() {
 
   if echo "$delta" | grep -qw ssim
   then
-    ssim="$(compare -metric ssim "$image" "$output" null: 2>&1)"
+    ssim="$(compare -metric ssim "$image" "$output" null: 2>&1 || true)"
     delta="$(echo "$delta" | sed "s/\<ssim\>/$ssim/")"
   fi
 
   if echo "$delta" | grep -qw dssim
   then
-    dssim="$(compare -metric dssim "$image" "$output" null: 2>&1)"
+    dssim="$(compare -metric dssim "$image" "$output" null: 2>&1 || true)"
     delta="$(echo "$delta" | sed "s/\<dssim\>/$dssim/")"
   fi
 
   if echo "$delta" | grep -qw psnr
   then
-    psnr="$(compare -metric psnr "$image" "$output" null: 2>&1)"
+    psnr="$(compare -metric psnr "$image" "$output" null: 2>&1 || true)"
     delta="$(echo "$delta" | sed "s/\<psnr\>/$psnr/")"
   fi
 
   if echo "$delta" | grep -qw mae
   then
-    mae="$(compare -metric mae "$image" "$output" null: 2>&1)"
+    mae="$(compare -metric mae "$image" "$output" null: 2>&1 || true)"
     delta="$(echo "$delta" | sed "s/\<mae\>/$mae/")"
   fi
 
   if echo "$delta" | grep -qw fuzz
   then
-    fuzz="$(compare -metric fuzz "$image" "$output" null: 2>&1)"
+    fuzz="$(compare -metric fuzz "$image" "$output" null: 2>&1 || true)"
     delta="$(echo "$delta" | sed "s/\<fuzz\>/$fuzz/")"
   fi
 
   if echo "$delta" | grep -qw ncc
   then
-    ncc="$(compare -metric ncc "$image" "$output" null: 2>&1)"
+    ncc="$(compare -metric ncc "$image" "$output" null: 2>&1 || true)"
     delta="$(echo "$delta" | sed "s/\<ncc\>/$ncc/")"
   fi
 
@@ -452,8 +451,6 @@ start() {
   echo "$image,$output,$compressor,$number,$size,$saving,$time,$genomes,$delta" >> output.txt
   echo "$output" >> out.txt
   echo "$output" >> files.txt
-
-  set -e
 }
 
 
