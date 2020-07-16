@@ -38,7 +38,7 @@ advdef,-z4,output
   ect,-8 -s,output
   ect,-9 -s,output
 
-  optipng,,-out output input
+optipng,,-out output input
   optipng,-o1 -strip all,-out output input
   optipng,-o2 -strip all,-out output input
   optipng,-o3 -strip all,-out output input
@@ -56,7 +56,7 @@ advdef,-z4,output
   oxipng,-o6 --strip all,--out output input
   oxipng,-o6 -Z --strip all,--out output input
 
-  pingo,-s1,output
+pingo,-s1,output
   pingo,-s2,output
   pingo,-s3,output
   pingo,-s4,output
@@ -96,11 +96,33 @@ advdef,-z4,output
 
   zopflipng,,input output
   zopflipng,-m,input output
-zopflipng,--iterations=10,input output
+  zopflipng,--iterations=10,input output
   zopflipng,--iterations=100,input output
   zopflipng,--iterations=1000,input output
 
 EOF
+
+
+# https://stackoverflow.com/questions/16414410/delete-empty-lines-using-sed
+# https://stackoverflow.com/questions/8206280/delete-all-lines-beginning-with-a-from-a-file
+# https://stackoverflow.com/questions/4286469/how-to-parse-a-csv-file-in-bash
+
+mv test.txt tmp.txt
+
+sed -i '/^\s*$/d' tmp.txt
+sed -i '/^ /d' tmp.txt
+
+while IFS=, read -r compressor options arguments
+do
+  if command -v "$compressor" >/dev/null 2>&1
+  then
+    printf '%s,%s,%s\n' "$compressor" "$options" "$arguments" >> test.txt
+  else
+    printf '%s\n' "$compressor not available"
+  fi
+done < tmp.txt
+
+rm tmp.txt
 
 
 # https://en.wikipedia.org/wiki/Standard_test_image
@@ -170,7 +192,7 @@ include() {
   do
     if ! command -v "$command" >/dev/null 2>&1
     then
-      echo "$command is not installed"
+      echo "$command not available"
       exit 1
     fi
   done
@@ -550,6 +572,7 @@ newline
 # http://tldp.org/LDP/abs/html/ivr.html
 # http://ahmed.amayem.com/bash-indirect-expansion-exploration/
 # https://stackoverflow.com/questions/399078/what-special-characters-must-be-escaped-in-regular-expressions
+# https://stackoverflow.com/questions/15316569/linux-print-all-lines-in-a-file-not-starting-with
 
 while IFS=, read -r image name format size dimensions type colorspace colors depth compression entropy
 do
@@ -569,7 +592,7 @@ do
 
     while read -r input
     do
-      awk '/^\S/{print}' test.txt | while IFS=, read -r compressor options arguments
+      while IFS=, read -r compressor options arguments
       do
         if echo "$arguments" | grep -qw input && echo "$arguments" | grep -qw output
         then
@@ -583,7 +606,7 @@ do
         command="$compressor $options $arguments"
 
         start "$i" "$image" "$compressor" "$options" "$command" "$input" "$output" "$copy"
-      done
+      done < test.txt
     done < in.txt
 
     mv out.txt in.txt
