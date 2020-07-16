@@ -580,7 +580,7 @@ do
           copy="copy"
         fi
 
-        output="$(basename "$input" .png)$(echo "$compressor $options" | sed 's/[ -=]//g').png"
+        output="$(basename "$input" .png)$(echo "$compressor $options" | tr ' ' '_').png"
         arguments="$(echo "$arguments" | sed "s/input/$input/" | sed "s/output/$output/")"
         command="$compressor $options $arguments"
 
