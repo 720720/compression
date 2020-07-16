@@ -17,59 +17,59 @@ test="ssim"
 
 cat > test.txt <<'EOF'
 
-  advdef,-z1,input
-  advdef,-z2,input
-  advdef,-z3,input
-advdef,-z4,input
+  advdef,-z1,output
+  advdef,-z2,output
+  advdef,-z3,output
+advdef,-z4,output
 
-  advpng,-z1,input
-  advpng,-z2,input
-  advpng,-z3,input
-  advpng,-z4,input
+  advpng,-z1,output
+  advpng,-z2,output
+  advpng,-z3,output
+  advpng,-z4,output
 
-  ect,,input
-  ect,-1 -s,input
-  ect,-2 -s,input
-  ect,-3 -s,input
-  ect,-4 -s,input
-  ect,-5 -s,input
-  ect,-6 -s,input
-  ect,-7 -s,input
-  ect,-8 -s,input
-  ect,-9 -s,input
+  ect,,output
+  ect,-1 -s,output
+  ect,-2 -s,output
+  ect,-3 -s,output
+  ect,-4 -s,output
+  ect,-5 -s,output
+  ect,-6 -s,output
+  ect,-7 -s,output
+  ect,-8 -s,output
+  ect,-9 -s,output
 
-  optipng,,input
-  optipng,-o1,input
-  optipng,-o2,input
-  optipng,-o3,input
-  optipng,-o4,input
-  optipng,-o5,input
-  optipng,-o6,input
-optipng,-o7,input
+  optipng,,output
+  optipng,-o1,output
+  optipng,-o2,output
+  optipng,-o3,output
+  optipng,-o4,output
+  optipng,-o5,output
+  optipng,-o6,output
+optipng,-o7,output
 
-  oxipng,,input
-  oxipng,-o1,input
-  oxipng,-o2,input
-  oxipng,-o3,input
-  oxipng,-o4,input
-  oxipng,-o5,input
-  oxipng,-o6,input
-  oxipng,-o6 -Z,input
+  oxipng,,output
+  oxipng,-o1,output
+  oxipng,-o2,output
+  oxipng,-o3,output
+  oxipng,-o4,output
+  oxipng,-o5,output
+  oxipng,-o6,output
+  oxipng,-o6 -Z,output
 
-pingo,-s1,input
-  pingo,-s2,input
-  pingo,-s3,input
-  pingo,-s4,input
-  pingo,-s5,input
-  pingo,-s6,input
-  pingo,-s7,input
-  pingo,-s8,input
+  pingo,-s1,output
+  pingo,-s2,output
+  pingo,-s3,output
+  pingo,-s4,output
+  pingo,-s5,output
+  pingo,-s6,output
+  pingo,-s7,output
+  pingo,-s8,output
 
-  pngoptimizercl,,input
+  pngoptimizercl,,output
 
   pngout,,input output
 
-  pngquant,,input
+  pngquant,,output
 
   pngwolf,--verbose-summary --strip-optional,--in=input --out=output
   pngwolf,--verbose-summary --strip-optional --estimator=libdeflate,--in=input --out=output
@@ -91,10 +91,10 @@ pingo,-s1,input
   pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=100 --estimator=zopfli,--in=input --out=output
   pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=1000 --estimator=zopfli,--in=input --out=output
 
-  truepng,,input
-  truepng,-o4,input
+  truepng,,output
+  truepng,-o4,output
 
-  zopflipng,,input output
+zopflipng,,input output
   zopflipng,-m,input output
   zopflipng,--iterations=10,input output
   zopflipng,--iterations=100,input output
