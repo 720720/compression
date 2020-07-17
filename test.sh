@@ -13,9 +13,9 @@ find . ! -name 'test.sh' -type f -exec rm -f {} +
 iterations=2
 
 
-# diff="butteraugli,ssimulacra,ssim,dssim,psnr,mae,fuzz,ncc"
+# test="butteraugli,ssimulacra,ssim,dssim,psnr,mae,fuzz,ncc"
 
-diff="ssim"
+test="ssim"
 
 
 # compression
@@ -379,56 +379,58 @@ start() {
   genomes=$(awk 'BEGIN{genomes=0}/number of genomes/{genomes+=$5}END{print genomes}' stdout.txt)
 
 
-  if echo "$diff" | grep -qw butteraugli
+  delta="$test"
+
+  if echo "$delta" | grep -qw butteraugli
   then
     butteraugli="$(butteraugli "$image" "$output")"
-    diff="$(echo "$diff" | sed "s/\<butteraugli\>/$butteraugli/")"
+    delta="$(echo "$delta" | sed "s/\<butteraugli\>/$butteraugli/")"
   fi
 
-  if echo "$diff" | grep -qw ssimulacra
+  if echo "$delta" | grep -qw ssimulacra
   then
     ssimulacra="$(ssimulacra "$image" "$output")"
-    diff="$(echo "$diff" | sed "s/\<ssimulacra\>/$ssimulacra/")"
+    delta="$(echo "$delta" | sed "s/\<ssimulacra\>/$ssimulacra/")"
   fi
 
-  if echo "$diff" | grep -qw ssim
+  if echo "$delta" | grep -qw ssim
   then
     ssim="$(compare -metric ssim "$image" "$output" null: 2>&1 || true)"
-    diff="$(echo "$diff" | sed "s/\<ssim\>/$ssim/")"
+    delta="$(echo "$delta" | sed "s/\<ssim\>/$ssim/")"
   fi
 
-  if echo "$diff" | grep -qw dssim
+  if echo "$delta" | grep -qw dssim
   then
     dssim="$(compare -metric dssim "$image" "$output" null: 2>&1 || true)"
-    diff="$(echo "$diff" | sed "s/\<dssim\>/$dssim/")"
+    delta="$(echo "$delta" | sed "s/\<dssim\>/$dssim/")"
   fi
 
-  if echo "$diff" | grep -qw psnr
+  if echo "$delta" | grep -qw psnr
   then
     psnr="$(compare -metric psnr "$image" "$output" null: 2>&1 || true)"
-    diff="$(echo "$diff" | sed "s/\<psnr\>/$psnr/")"
+    delta="$(echo "$delta" | sed "s/\<psnr\>/$psnr/")"
   fi
 
-  if echo "$diff" | grep -qw mae
+  if echo "$delta" | grep -qw mae
   then
     mae="$(compare -metric mae "$image" "$output" null: 2>&1 || true)"
-    diff="$(echo "$diff" | sed "s/\<mae\>/$mae/")"
+    delta="$(echo "$delta" | sed "s/\<mae\>/$mae/")"
   fi
 
-  if echo "$diff" | grep -qw fuzz
+  if echo "$delta" | grep -qw fuzz
   then
     fuzz="$(compare -metric fuzz "$image" "$output" null: 2>&1 || true)"
-    diff="$(echo "$diff" | sed "s/\<fuzz\>/$fuzz/")"
+    delta="$(echo "$delta" | sed "s/\<fuzz\>/$fuzz/")"
   fi
 
-  if echo "$diff" | grep -qw ncc
+  if echo "$delta" | grep -qw ncc
   then
     ncc="$(compare -metric ncc "$image" "$output" null: 2>&1 || true)"
-    diff="$(echo "$diff" | sed "s/\<ncc\>/$ncc/")"
+    delta="$(echo "$delta" | sed "s/\<ncc\>/$ncc/")"
   fi
 
 
-  echo "$image,$output,$compressor,$number,$size,$saving,$time,$genomes,$diff" >> output.txt
+  echo "$image,$output,$compressor,$number,$size,$saving,$time,$genomes,$delta" >> output.txt
   echo "$output" >> out.txt
 }
 
@@ -548,7 +550,7 @@ do
     i=$((i + 1))
   done
 
-  awk -v FS="," -v OFS="," -v diff="$diff" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",diff}$1==image{for(i=3;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | separate | column -s, -t | colorize
+  awk -v FS="," -v OFS="," -v test="$test" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",test}$1==image{for(i=3;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | separate | column -s, -t | colorize
   echo
 
   tock
@@ -563,7 +565,7 @@ while IFS=, read -r image name format size dimensions type colorspace colors dep
 do
   printf "image: %s\nname: %s\nformat: %s\nsize: %s\ndimensions: %s\ntype: %s\ncolorspace: %s\ncolors: %s\ndepth: %s\ncompression: %s\nentropy: %s\n" "$image" "$name" "$format" "$size" "$dimensions" "$type" "$colorspace" "$colors" "$depth" "$compression" "$entropy" >> result.txt
   echo >> result.txt
-  awk -v FS="," -v OFS="," -v diff="$diff" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",diff}$1==image{for(i=3;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | column -s, -t >> result.txt
+  awk -v FS="," -v OFS="," -v test="$test" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",test}$1==image{for(i=3;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | column -s, -t >> result.txt
   echo >> result.txt
 done < input.txt
 
