@@ -28,7 +28,7 @@ gifsicle,-O3,input -o output
 EOF
 
 cat > jpg.txt <<'EOF'
-guetzli,,input output
+  guetzli,,input output
   guetzli,--quality 84,input output
   guetzli,--quality 95,input output
 
@@ -123,34 +123,6 @@ optipng,-o7,output
 EOF
 
 
-# https://stackoverflow.com/questions/16414410/delete-empty-lines-using-sed
-# https://stackoverflow.com/questions/8206280/delete-all-lines-beginning-with-a-from-a-file
-# https://stackoverflow.com/questions/4286469/how-to-parse-a-csv-file-in-bash
-
-trim() {
-  mv "$1" tmp.txt
-
-  sed -i '/^\s*$/d' tmp.txt
-  sed -i '/^ /d' tmp.txt
-
-  while IFS=, read -r compressor options arguments
-  do
-    if command -v "$compressor" >/dev/null 2>&1
-    then
-      printf '%s,%s,%s\n' "$compressor" "$options" "$arguments" >> "$1"
-    else
-      printf '%s\n' "$compressor not available"
-    fi
-  done < tmp.txt
-
-  rm tmp.txt
-}
-
-trim gif.txt
-trim jpg.txt
-trim png.txt
-
-
 # https://en.wikipedia.org/wiki/Standard_test_image
 
 # gif
@@ -236,94 +208,87 @@ include() {
 
 # https://github.com/nathanaeljones/imaging-wiki
 
-# imagemagick_href="https://imagemagick.org/"
-imagemagick_version="$(magick -version | awk 'NR==1 {print $3}')"
+imagemagick="imagemagick $(magick -version | awk 'NR==1 {print $3}')"
 
+# https://en.wikipedia.org/wiki/GIF
+
+gifsicle="gifsicle $(gifsicle --version | awk 'NR==1 {print $3}')"
 
 # https://en.wikipedia.org/wiki/JPEG
 
-# guetzli_href="https://github.com/google/guetzli"
-guetzli_version="1.0.1"
-
-# jpegrecompress_href="https://github.com/danielgtaylor/jpeg-archive"
-jpegrecompress_version="$(jpeg-recompress -V)"
-
-# jpegoptim_href="https://github.com/tjko/jpegoptim"
-jpegoptim_version="$(jpegoptim -V | awk 'NR==1{print substr($2,2)}')"
-
-# jpegtran_href="https://github.com/libjpeg-turbo/libjpeg-turbo"
-jpegtran_version="$(jpegtran -version 2>&1 | awk '{print $3}')"
-
-# mozjpeg_href="https://github.com/mozilla/mozjpeg"
-mozjpeg_version="$(mozjpeg-cjpeg -version 2>&1 | awk '{print $3}')"
-
+guetzli="guetzli 1.0.1"
+jpegrecompress="jpegrecompress $(jpeg-recompress -V)"
+jpegoptim="jpegoptim $(jpegoptim -V | awk 'NR==1{print substr($2,2)}')"
+jpegtran="jpegtran $(jpegtran -version 2>&1 | awk '{print $3}')"
+mozjpeg="mozjpeg $(mozjpeg-cjpeg -version 2>&1 | awk '{print $3}')"
 
 # https://en.wikipedia.org/wiki/Portable_Network_Graphics
 
-# advdef_href="https://github.com/amadvance/advancecomp"
-advdef_version="$(advdef -V | awk '{print substr($2,2)}')"
-
-# advpng_href="https://github.com/amadvance/advancecomp"
-advpng_version="$(advpng -V | awk '{print substr($2,2)}')"
-
-# ect_href="https://github.com/fhanau/Efficient-Compression-Tool"
-ect_version="$(ect | awk '/Version/{print $2}')"
-
-# optipng_href="http://optipng.sourceforge.net/"
-optipng_version="$(optipng -V | awk '/OptiPNG version/{print $3}')"
-
-# oxipng_href="https://github.com/shssoichiro/oxipng"
-oxipng_version="$(oxipng -V | awk '{print $2}')"
-
-# pingo_href="https://css-ig.net/pingo"
-pingo_version="$(pingo -V | awk '/pingo v/{print substr($2,2)}')"
-
-# pngcrush_href="https://pmt.sourceforge.io/pngcrush/"
-pngcrush_version="$(pngcrush -version 2>&1 | awk -F, '/pngcrush/{print $1}' | awk -F' ' '{print $2}')"
-
-# pngoptimizercl_href="https://github.com/hadrien-psydk/pngoptimizer"
-pngoptimizercl_version="$(pngoptimizercl | awk 'NR==1{print $2}')"
-
-# pngout_href="https://jonof.id.au/kenutils.html"
-pngout_version="20200115"
-
-# pngquant_href="https://github.com/kornelski/pngquant"
-pngquant_version="$(pngquant -V | awk '{print $1}')"
-
-# pngwolf_href="https://github.com/jibsen/pngwolf-zopfli"
-pngwolf_version="$(pngwolf --version | awk 'NR==1{print $2}')"
-
-# truepng_href="http://x128.ho.ua/pngutils.html"
-truepng_version="$(truepng | awk 'NR==1 {print $2}')"
-
-# zopflipng_href="https://github.com/google/zopfli"
-zopflipng_version="1.0.3"
-
+advdef="advdef $(advdef -V | awk '{print substr($2,2)}')"
+advpng="advpng $(advpng -V | awk '{print substr($2,2)}')"
+ect="ect $(ect | awk '/Version/{print $2}')"
+optipng="optipng $(optipng -V | awk '/OptiPNG version/{print $3}')"
+oxipng="oxipng $(oxipng -V | awk '{print $2}')"
+# pingo="pingo $(pingo -V | awk '/pingo v/{print substr($2,2)}')"
+pngcrush="pngcrush $(pngcrush -version 2>&1 | awk -F, '/pngcrush/{print $1}' | awk -F' ' '{print $2}')"
+pngoptimizercl="pngoptimizercl $(pngoptimizercl | awk 'NR==1{print $2}')"
+pngout="pngout 20200115"
+pngquant="pngquant $(pngquant -V | awk '{print $1}')"
+pngwolf="pngwolf $(pngwolf --version | awk 'NR==1{print $2}')"
+# truepng="truepng $(truepng | awk 'NR==1 {print $2}')"
+zopflipng="zopflipng 1.0.3"
 
 # https://en.wikipedia.org/wiki/Scalable_Vector_Graphics
 
-# scour_href="https://github.com/scour-project/scour"
-scour_version="$(scour --version)"
-
-# svgcleaner_href="https://github.com/RazrFalcon/svgcleaner"
-svgcleaner_version="$(svgcleaner --version | awk '{print $2}')"
-
-# svgo_href="https://github.com/svg/svgo"
-svgo_version="$(svgo -v)"
-
+scour="scour $(scour --version)"
+svgcleaner="svgcleaner $(svgcleaner --version | awk '{print $2}')"
+svgo="svgo $(svgo -v)"
 
 # https://en.wikipedia.org/wiki/Structural_similarity
 
-# butteraugli_href="https://github.com/google/butteraugli"
-butteraugli_version="71b18b6"
+butteraugli="butteraugli 71b18b6"
+compare="compare $(compare -version | awk 'NR==1 {print $3}')"
+ssimulacra="ssimulacra 375726b"
 
-# include compare
-# compare_href="https://imagemagick.org/script/compare.php"
-compare_version="$(compare -version | awk 'NR==1 {print $3}')"
 
-# include ssimulacra
-# ssimulacra_href="https://github.com/cloudinary/ssimulacra"
-ssimulacra_version="375726b"
+# https://stackoverflow.com/questions/16414410/delete-empty-lines-using-sed
+# https://stackoverflow.com/questions/8206280/delete-all-lines-beginning-with-a-from-a-file
+# https://stackoverflow.com/questions/4286469/how-to-parse-a-csv-file-in-bash
+# http://www.tldp.org/LDP/abs/html/ivr.html
+# https://unix.stackexchange.com/questions/30173/how-to-remove-duplicate-lines-inside-a-text-file
+
+echo "$(uname -a)" > result.txt
+echo >> result.txt
+
+trim() {
+  mv "$1" tmp.txt
+
+  sed -i '/^\s*$/d' tmp.txt
+  sed -i '/^ /d' tmp.txt
+
+  while IFS=, read -r compressor options arguments
+  do
+    if command -v "$compressor" >/dev/null 2>&1
+    then
+      printf '%s,%s,%s\n' "$compressor" "$options" "$arguments" >> "$1"
+
+      if ! grep -qw "$compressor" result.txt
+      then
+        eval echo "\$$compressor" >> result.txt
+      fi
+    else
+      printf '%s\n' "$compressor not available"
+    fi
+  done < tmp.txt
+
+  rm tmp.txt
+}
+
+trim gif.txt
+trim jpg.txt
+trim png.txt
+
+echo >> result.txt
 
 
 # https://unix.stackexchange.com/questions/40786/how-to-do-integer-float-calculations-in-bash-or-other-languages-frameworks
