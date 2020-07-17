@@ -622,7 +622,7 @@ do
     i=$((i + 1))
   done
 
-  awk -v FS="," -v OFS="," -v test="$test" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",test}$1==image{for(i=3;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | separate | column -s, -t | colorize
+  awk -v FS="," -v OFS="," -v diff="$diff" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",diff}$1==image{for(i=3;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | separate | column -s, -t | colorize
   newline
 
   tock
@@ -637,7 +637,7 @@ while IFS=, read -r image name format size dimensions type colorspace colors dep
 do
   printf "image: %s\nname: %s\nformat: %s\nsize: %s\ndimensions: %s\ntype: %s\ncolorspace: %s\ncolors: %s\ndepth: %s\ncompression: %s\nentropy: %s\n" "$image" "$name" "$format" "$size" "$dimensions" "$type" "$colorspace" "$colors" "$depth" "$compression" "$entropy" >> result.txt
   newline >> result.txt
-  awk -v FS="," -v OFS="," -v test="$test" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",test}$1==image{for(i=3;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | column -s, -t >> result.txt
+  awk -v FS="," -v OFS="," -v diff="$diff" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",diff}$1==image{for(i=3;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | column -s, -t >> result.txt
   newline >> result.txt
 done < input.txt
 
