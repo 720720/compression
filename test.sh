@@ -13,9 +13,9 @@ find . ! -name 'test.sh' -type f -exec rm -f {} +
 iterations=2
 
 
-# test="butteraugli,ssimulacra,ssim,dssim,psnr,mae,fuzz,ncc"
+# diff="butteraugli,ssimulacra,ssim,dssim,psnr,mae,fuzz,ncc"
 
-test="ssim"
+diff="ssim"
 
 
 # compression
@@ -23,18 +23,18 @@ test="ssim"
 cat > gif.txt <<'EOF'
   gifsicle,,input -o output
   gifsicle,-O1,input -o output
-  gifsicle,-O2,input -o output
+gifsicle,-O2,input -o output
 gifsicle,-O3,input -o output
 EOF
 
 cat > jpg.txt <<'EOF'
-  guetzli,,input output
+guetzli,,input output
   guetzli,--quality 84,input output
   guetzli,--quality 95,input output
 
-  mozjpeg-cjpeg,,input > output
+mozjpeg-cjpeg,,input > output
   mozjpeg-cjpeg,-quality 75,input > output
-mozjpeg-cjpeg,-quality 90,input > output
+  mozjpeg-cjpeg,-quality 90,input > output
 EOF
 
 cat > png.txt <<'EOF'
@@ -197,13 +197,13 @@ wget "https://imgs.xkcd.com/comics/schrodinger.jpg"
 # wget "http://r0k.us/graphics/kodak/kodak/kodim23.png"
 # wget "http://r0k.us/graphics/kodak/kodak/kodim24.png"
 
-# wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/dachshund.png"
+wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/dachshund.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/rabbit_vectorized.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/chameleon.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/sheep-coffee.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/monkey-riding-a-mammoth.png"
 
-wget "https://imgs.xkcd.com/comics/random_number.png"
+# wget "https://imgs.xkcd.com/comics/random_number.png"
 # wget "https://imgs.xkcd.com/comics/good_code.png"
 # wget "https://imgs.xkcd.com/comics/standards.png"
 # wget "https://imgs.xkcd.com/comics/password_strength.png"
@@ -402,7 +402,7 @@ start() {
 
   stoptimer "$timer"
 
-  if ! identify "$output" >/dev/null 2>&1
+  if ! identify "$output[0]" >/dev/null 2>&1
   then
     cat stdout.txt stderr.txt
     return
@@ -415,58 +415,56 @@ start() {
   genomes=$(awk 'BEGIN{genomes=0}/number of genomes/{genomes+=$5}END{print genomes}' stdout.txt)
 
 
-  delta="$test"
-
-  if echo "$delta" | grep -qw butteraugli
+  if echo "$diff" | grep -qw butteraugli
   then
     butteraugli="$(butteraugli "$image" "$output")"
-    delta="$(echo "$delta" | sed "s/\<butteraugli\>/$butteraugli/")"
+    diff="$(echo "$diff" | sed "s/\<butteraugli\>/$butteraugli/")"
   fi
 
-  if echo "$delta" | grep -qw ssimulacra
+  if echo "$diff" | grep -qw ssimulacra
   then
     ssimulacra="$(ssimulacra "$image" "$output")"
-    delta="$(echo "$delta" | sed "s/\<ssimulacra\>/$ssimulacra/")"
+    diff="$(echo "$diff" | sed "s/\<ssimulacra\>/$ssimulacra/")"
   fi
 
-  if echo "$delta" | grep -qw ssim
+  if echo "$diff" | grep -qw ssim
   then
     ssim="$(compare -metric ssim "$image" "$output" null: 2>&1 || true)"
-    delta="$(echo "$delta" | sed "s/\<ssim\>/$ssim/")"
+    diff="$(echo "$diff" | sed "s/\<ssim\>/$ssim/")"
   fi
 
-  if echo "$delta" | grep -qw dssim
+  if echo "$diff" | grep -qw dssim
   then
     dssim="$(compare -metric dssim "$image" "$output" null: 2>&1 || true)"
-    delta="$(echo "$delta" | sed "s/\<dssim\>/$dssim/")"
+    diff="$(echo "$diff" | sed "s/\<dssim\>/$dssim/")"
   fi
 
-  if echo "$delta" | grep -qw psnr
+  if echo "$diff" | grep -qw psnr
   then
     psnr="$(compare -metric psnr "$image" "$output" null: 2>&1 || true)"
-    delta="$(echo "$delta" | sed "s/\<psnr\>/$psnr/")"
+    diff="$(echo "$diff" | sed "s/\<psnr\>/$psnr/")"
   fi
 
-  if echo "$delta" | grep -qw mae
+  if echo "$diff" | grep -qw mae
   then
     mae="$(compare -metric mae "$image" "$output" null: 2>&1 || true)"
-    delta="$(echo "$delta" | sed "s/\<mae\>/$mae/")"
+    diff="$(echo "$diff" | sed "s/\<mae\>/$mae/")"
   fi
 
-  if echo "$delta" | grep -qw fuzz
+  if echo "$diff" | grep -qw fuzz
   then
     fuzz="$(compare -metric fuzz "$image" "$output" null: 2>&1 || true)"
-    delta="$(echo "$delta" | sed "s/\<fuzz\>/$fuzz/")"
+    diff="$(echo "$diff" | sed "s/\<fuzz\>/$fuzz/")"
   fi
 
-  if echo "$delta" | grep -qw ncc
+  if echo "$diff" | grep -qw ncc
   then
     ncc="$(compare -metric ncc "$image" "$output" null: 2>&1 || true)"
-    delta="$(echo "$delta" | sed "s/\<ncc\>/$ncc/")"
+    diff="$(echo "$diff" | sed "s/\<ncc\>/$ncc/")"
   fi
 
 
-  echo "$image,$output,$compressor,$number,$size,$saving,$time,$genomes,$delta" >> output.txt
+  echo "$image,$output,$compressor,$number,$size,$saving,$time,$genomes,$diff" >> output.txt
   echo "$output" >> out.txt
   echo "$output" >> files.txt
 }
@@ -528,6 +526,11 @@ clean() {
 
 
 # https://stackoverflow.com/questions/39319539/what-is-the-most-portable-way-to-write-an-iteration-for-while-loop-in-a-posi
+# https://davidwalsh.name/first-frame-animated-gif
+# https://imagemagick.org/script/identify.php
+# https://imagemagick.org/script/escape.php
+# https://imagemagick.org/script/command-line-processing.php
+
 
 if [ ! -f input.txt ]
 then
@@ -542,17 +545,17 @@ then
 
   for file in $files
   do
-    image="$(identify -format "%f" "$file")"
-    name="$(identify -format "%t" "$file")"
-    format="$(identify -format "%m" "$file")"
+    image="$(identify -format "%f" "$file[0]")"
+    name="$(identify -format "%t" "$file[0]")"
+    format="$(identify -format "%m" "$file[0]")"
     size="$(wc -c < "$file")"
-    dimensions="$(identify -format "%G" "$file")"
-    type="$(identify -format "%[type]" "$file")"
-    colorspace="$(identify -format "%[colorspace]" "$file")"
-    colors="$(identify -format "%k" "$file")"
-    depth="$(identify -format "%z-bit" "$file")"
-    compression="$(identify -format "%C" "$file")"
-    entropy="$(identify -format "%[entropy]" "$file")"
+    dimensions="$(identify -format "%G" "$file[0]")"
+    type="$(identify -format "%[type]" "$file[0]")"
+    colorspace="$(identify -format "%[colorspace]" "$file[0]")"
+    colors="$(identify -format "%k" "$file[0]")"
+    depth="$(identify -format "%z-bit" "$file[0]")"
+    compression="$(identify -format "%C" "$file[0]")"
+    entropy="$(identify -format "%[entropy]" "$file[0]")"
 
     echo "$image,$name,$format,$size,$dimensions,$type,$colorspace,$colors,$depth,$compression,$entropy" >> input.txt
     echo "$image" >> files.txt
@@ -585,9 +588,9 @@ do
   echo "$image" > in.txt
 
   case $(file --brief --mime-type "$image") in
-    image/gif) test="gif.txt" ;;
-    image/jpeg) test="jpg.txt" ;;
-    image/png)  test="png.txt" ;;
+    image/gif) list="gif.txt" ;;
+    image/jpeg) list="jpg.txt" ;;
+    image/png) list="png.txt" ;;
   esac
 
   i=1
@@ -611,7 +614,7 @@ do
         command="$compressor $options $arguments"
 
         start "$i" "$image" "$compressor" "$options" "$command" "$input" "$output" "$copy"
-      done < "$test"
+      done < "$list"
     done < in.txt
 
     mv out.txt in.txt
