@@ -20,6 +20,13 @@ test="ssim"
 
 # compression
 
+cat > gif.txt <<'EOF'
+  gifsicle,,input -o output
+  gifsicle -O1,,input -o output
+  gifsicle -O2,,input -o output
+gifsicle -O3,,input -o output
+EOF
+
 cat > jpg.txt <<'EOF'
   guetzli,,input output
   guetzli --quality 84,,input output
@@ -139,11 +146,29 @@ trim() {
   rm tmp.txt
 }
 
+trim gif.txt
 trim jpg.txt
 trim png.txt
 
 
 # https://en.wikipedia.org/wiki/Standard_test_image
+
+# gif
+
+wget "https://imgs.xkcd.com/comics/slideshow.gif"
+# wget "https://imgs.xkcd.com/comics/eternal_flame.gif"
+
+
+# jpg
+
+wget "https://imgs.xkcd.com/comics/schrodinger.jpg"
+
+# wget "https://assets.toggl.com/images/toggl-how-to-save-the-princess-in-8-programming-languages.jpg"
+# wget "https://toggl.com/blog/wp-content/uploads/2017/04/toggl-how-to-kill-the-dragon-with-9-programming-languages.jpg"
+# wget "https://toggl.com/blog/wp-content/uploads/2018/08/toggl-how-to-create-horse-with-programming.jpg"
+
+# wget "https://upload.wikimedia.org/wikipedia/commons/6/6a/Mona_Lisa.jpg"
+# wget "https://upload.wikimedia.org/wikipedia/commons/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg"
 
 # png
 
@@ -178,7 +203,6 @@ trim png.txt
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/sheep-coffee.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/monkey-riding-a-mammoth.png"
 
-wget "https://imgs.xkcd.com/comics/schrodinger.jpg"
 wget "https://imgs.xkcd.com/comics/random_number.png"
 # wget "https://imgs.xkcd.com/comics/good_code.png"
 # wget "https://imgs.xkcd.com/comics/standards.png"
@@ -187,15 +211,6 @@ wget "https://imgs.xkcd.com/comics/random_number.png"
 
 # wget "http://s3.amazonaws.com/theoatmeal-img/comics/definitely/definitely.png"
 # wget "http://s3.amazonaws.com/theoatmeal-img/comics/cats_schrodinger/cats_schrodinger.png"
-
-# jpg
-
-# wget "https://assets.toggl.com/images/toggl-how-to-save-the-princess-in-8-programming-languages.jpg"
-# wget "https://toggl.com/blog/wp-content/uploads/2017/04/toggl-how-to-kill-the-dragon-with-9-programming-languages.jpg"
-# wget "https://toggl.com/blog/wp-content/uploads/2018/08/toggl-how-to-create-horse-with-programming.jpg"
-
-# wget "https://upload.wikimedia.org/wikipedia/commons/6/6a/Mona_Lisa.jpg"
-# wget "https://upload.wikimedia.org/wikipedia/commons/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg"
 
 
 # https://www.unix.com/shell-programming-and-scripting/176837-bash-hide-terminal-cursor.html
@@ -523,7 +538,7 @@ then
   echo "input.txt" >> files.txt
   echo "output.txt" >> files.txt
 
-  files="$(find . -type f -name "*.jpg" -o -name "*.png")"
+  files="$(find . -type f -name "*.gif" -name "*.jpg" -o -name "*.png")"
 
   for file in $files
   do
@@ -570,8 +585,9 @@ do
   echo "$image" > in.txt
 
   case $(file --brief --mime-type "$image") in
-    image/jpeg) test="jpg.txt";;
-    image/png)  test="png.txt";;
+    image/gif) test="gif.txt" ;;
+    image/jpeg) test="jpg.txt" ;;
+    image/png)  test="png.txt" ;;
   esac
 
   i=1
