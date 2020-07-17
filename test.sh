@@ -538,7 +538,7 @@ then
   echo "input.txt" >> files.txt
   echo "output.txt" >> files.txt
 
-  files="$(find . -type f -name "*.gif" -name "*.jpg" -o -name "*.png")"
+  files="$(find . -type f -name "*.gif" -o -name "*.jpg" -o -name "*.png")"
 
   for file in $files
   do
