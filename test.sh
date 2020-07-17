@@ -15,12 +15,21 @@ test="ssim"
 
 # compression
 
-cat > test.txt <<'EOF'
+cat > jpg.txt <<'EOF'
+  guetzli,,input output
+  guetzli --quality 84,,input output
+  guetzli --quality 95,,input output
 
+mozjpeg-cjpeg,,input > output
+  mozjpeg-cjpeg -quality 75,,input > output
+  mozjpeg-cjpeg -quality 90,,input > output
+EOF
+
+cat > png.txt <<'EOF'
   advdef,-z1,output
   advdef,-z2,output
   advdef,-z3,output
-  advdef,-z4,output
+advdef,-z4,output
 
   advpng,-z1,output
   advpng,-z2,output
@@ -45,7 +54,7 @@ cat > test.txt <<'EOF'
   optipng,-o4,output
   optipng,-o5,output
   optipng,-o6,output
-  optipng,-o7,output
+optipng,-o7,output
 
   oxipng,,output
   oxipng,-o1,output
@@ -99,15 +108,6 @@ cat > test.txt <<'EOF'
   zopflipng,--iterations=10,input output
   zopflipng,--iterations=100,input output
   zopflipng,--iterations=1000,input output
-
-guetzli,,input output
-  guetzli --quality 84,,input output
-  guetzli --quality 95,,input output
-
-mozjpeg-cjpeg,,input > output
-  mozjpeg-cjpeg -quality 75,,input > output
-  mozjpeg-cjpeg -quality 90,,input > output
-
 EOF
 
 
@@ -115,22 +115,27 @@ EOF
 # https://stackoverflow.com/questions/8206280/delete-all-lines-beginning-with-a-from-a-file
 # https://stackoverflow.com/questions/4286469/how-to-parse-a-csv-file-in-bash
 
-mv test.txt tmp.txt
+trim() {
+  mv "$1" tmp.txt
 
-sed -i '/^\s*$/d' tmp.txt
-sed -i '/^ /d' tmp.txt
+  sed -i '/^\s*$/d' tmp.txt
+  sed -i '/^ /d' tmp.txt
 
-while IFS=, read -r compressor options arguments
-do
-  if command -v "$compressor" >/dev/null 2>&1
-  then
-    printf '%s,%s,%s\n' "$compressor" "$options" "$arguments" >> test.txt
-  else
-    printf '%s\n' "$compressor not available"
-  fi
-done < tmp.txt
+  while IFS=, read -r compressor options arguments
+  do
+    if command -v "$compressor" >/dev/null 2>&1
+    then
+      printf '%s,%s,%s\n' "$compressor" "$options" "$arguments" >> "$1"
+    else
+      printf '%s\n' "$compressor not available"
+    fi
+  done < tmp.txt
 
-rm tmp.txt
+  rm tmp.txt
+}
+
+trim jpg.txt
+trim png.txt
 
 
 # https://en.wikipedia.org/wiki/Standard_test_image
@@ -169,7 +174,7 @@ rm tmp.txt
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/monkey-riding-a-mammoth.png"
 
 wget "https://imgs.xkcd.com/comics/schrodinger.jpg"
-# wget "https://imgs.xkcd.com/comics/random_number.png"
+wget "https://imgs.xkcd.com/comics/random_number.png"
 # wget "https://imgs.xkcd.com/comics/good_code.png"
 # wget "https://imgs.xkcd.com/comics/standards.png"
 # wget "https://imgs.xkcd.com/comics/password_strength.png"
@@ -533,7 +538,7 @@ then
 fi
 
 
-clean
+# clean
 newline
 
 
@@ -557,6 +562,11 @@ do
 
   echo "$image" > in.txt
 
+  case $(file --brief --mime-type "$image") in
+    image/jpeg) test="jpg.txt";;
+    image/png)  test="png.txt";;
+  esac
+
   i=1
   while [ $i -le $iterations ]
   do
@@ -578,7 +588,7 @@ do
         command="$compressor $options $arguments"
 
         start "$i" "$image" "$compressor" "$options" "$command" "$input" "$output" "$copy"
-      done < test.txt
+      done < "$test"
     done < in.txt
 
     mv out.txt in.txt
@@ -606,7 +616,7 @@ do
 done < input.txt
 
 
-clean
+# clean
 newline
 
 
