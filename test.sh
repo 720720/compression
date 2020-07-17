@@ -22,19 +22,19 @@ test="ssim"
 
 cat > gif.txt <<'EOF'
   gifsicle,,input -o output
-  gifsicle -O1,,input -o output
-  gifsicle -O2,,input -o output
-gifsicle -O3,,input -o output
+  gifsicle,-O1,input -o output
+  gifsicle,-O2,input -o output
+gifsicle,-O3,input -o output
 EOF
 
 cat > jpg.txt <<'EOF'
   guetzli,,input output
-  guetzli --quality 84,,input output
-  guetzli --quality 95,,input output
+  guetzli,--quality 84,input output
+  guetzli,--quality 95,input output
 
-mozjpeg-cjpeg,,input > output
-  mozjpeg-cjpeg -quality 75,,input > output
-  mozjpeg-cjpeg -quality 90,,input > output
+  mozjpeg-cjpeg,,input > output
+  mozjpeg-cjpeg,-quality 75,input > output
+mozjpeg-cjpeg,-quality 90,input > output
 EOF
 
 cat > png.txt <<'EOF'
