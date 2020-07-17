@@ -20,7 +20,7 @@ cat > test.txt <<'EOF'
   advdef,-z1,output
   advdef,-z2,output
   advdef,-z3,output
-advdef,-z4,output
+  advdef,-z4,output
 
   advpng,-z1,output
   advpng,-z2,output
@@ -45,7 +45,7 @@ advdef,-z4,output
   optipng,-o4,output
   optipng,-o5,output
   optipng,-o6,output
-optipng,-o7,output
+  optipng,-o7,output
 
   oxipng,,output
   oxipng,-o1,output
@@ -94,11 +94,19 @@ optipng,-o7,output
   truepng,,output
   truepng,-o4,output
 
-zopflipng,,input output
+  zopflipng,,input output
   zopflipng,-m,input output
   zopflipng,--iterations=10,input output
   zopflipng,--iterations=100,input output
   zopflipng,--iterations=1000,input output
+
+guetzli,,input output
+  guetzli --quality 84,,input output
+  guetzli --quality 95,,input output
+
+mozjpeg-cjpeg,,input > output
+  mozjpeg-cjpeg -quality 75,,input > output
+  mozjpeg-cjpeg -quality 90,,input > output
 
 EOF
 
@@ -154,13 +162,13 @@ rm tmp.txt
 # wget "http://r0k.us/graphics/kodak/kodak/kodim23.png"
 # wget "http://r0k.us/graphics/kodak/kodak/kodim24.png"
 
-wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/dachshund.png"
+# wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/dachshund.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/rabbit_vectorized.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/chameleon.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/sheep-coffee.png"
 # wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/monkey-riding-a-mammoth.png"
 
-# wget "https://imgs.xkcd.com/comics/schrodinger.jpg"
+wget "https://imgs.xkcd.com/comics/schrodinger.jpg"
 # wget "https://imgs.xkcd.com/comics/random_number.png"
 # wget "https://imgs.xkcd.com/comics/good_code.png"
 # wget "https://imgs.xkcd.com/comics/standards.png"
@@ -180,7 +188,7 @@ wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/dachshund.png"
 
 # https://www.unix.com/shell-programming-and-scripting/176837-bash-hide-terminal-cursor.html
 
-tput civis
+# tput civis
 
 
 # https://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
@@ -292,45 +300,6 @@ include() {
 # ssimulacra_version="2a830ab"
 
 
-# http://netpbm.sourceforge.net/doc/directory.html
-
-for file in *.jpg
-do
-  if [ -f "$file" ]
-  then
-    name="$(basename "$file" .jpg)"
-    jpegtopnm "$file" > "${name}.ppm"
-  fi
-done
-
-for file in *.tif
-do
-  if [ -f "$file" ]
-  then
-    name="$(basename "$file" .tif)"
-    tifftopnm "$file" > "${name}.ppm"
-  fi
-done
-
-for file in *.ppm
-do
-  if [ -f "$file" ]
-  then
-    name="$(basename "$file" .ppm)"
-    pnmtopng -compression=0 "$file" > "${name}.png"
-  fi
-done
-
-
-# https://stackoverflow.com/questions/6363441/check-if-a-file-exists-with-wildcard-in-shell-script
-
-if ! ls ./*.png >/dev/null 2>&1
-then
-  echo "no images found"
-  exit 1
-fi
-
-
 # https://unix.stackexchange.com/questions/40786/how-to-do-integer-float-calculations-in-bash-or-other-languages-frameworks
 # https://stackoverflow.com/questions/38595559/how-to-define-a-function-on-one-line
 
@@ -421,7 +390,7 @@ start() {
 
   delta="$test"
 
-  if echo "$test" | grep -qw butteraugli
+  if echo "$delta" | grep -qw butteraugli
   then
     butteraugli="$(butteraugli "$image" "$output")"
     delta="$(echo "$delta" | sed "s/\<butteraugli\>/$butteraugli/")"
@@ -542,7 +511,9 @@ then
   echo "input.txt" >> files.txt
   echo "output.txt" >> files.txt
 
-  for file in *.png
+  files="$(find . -type f -name "*.jpg" -o -name "*.png")"
+
+  for file in $files
   do
     image="$(identify -format "%f" "$file")"
     name="$(identify -format "%t" "$file")"
@@ -573,6 +544,7 @@ newline
 # http://ahmed.amayem.com/bash-indirect-expansion-exploration/
 # https://stackoverflow.com/questions/399078/what-special-characters-must-be-escaped-in-regular-expressions
 # https://stackoverflow.com/questions/15316569/linux-print-all-lines-in-a-file-not-starting-with
+# https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
 
 while IFS=, read -r image name format size dimensions type colorspace colors depth compression entropy
 do
@@ -601,7 +573,7 @@ do
           copy=1
         fi
 
-        output="$(basename "$input" .png)_$(echo "$compressor $options" | tr -d '[ \-=] ').png"
+        output="${input%.*}_$(echo "$compressor $options" | tr -d '[ \-=] ').${input##*.}"
         arguments="$(echo "$arguments" | sed "s/input/$input/" | sed "s/output/$output/")"
         command="$compressor $options $arguments"
 
@@ -640,5 +612,5 @@ newline
 
 # https://www.unix.com/shell-programming-and-scripting/176837-bash-hide-terminal-cursor.html
 
-tput cnorm
+# tput cnorm
 
