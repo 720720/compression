@@ -234,97 +234,96 @@ include() {
 }
 
 
+# https://github.com/nathanaeljones/imaging-wiki
+
+# imagemagick_href="https://imagemagick.org/"
+imagemagick_version="$(magick -version | awk 'NR==1 {print $3}')"
+
+
 # https://en.wikipedia.org/wiki/JPEG
 
-# include guetzli
 # guetzli_href="https://github.com/google/guetzli"
-# guetzli_version="cb5e4a8"
+guetzli_version="1.0.1"
 
-# include jpeg-recompress
 # jpegrecompress_href="https://github.com/danielgtaylor/jpeg-archive"
-# jpegrecompress_version="$(jpeg-recompress -V)"
+jpegrecompress_version="$(jpeg-recompress -V)"
 
-# include jpegoptim
 # jpegoptim_href="https://github.com/tjko/jpegoptim"
-# jpegoptim_version="$(jpegoptim -V | awk 'NR==1{print substr($2,2)}')"
+jpegoptim_version="$(jpegoptim -V | awk 'NR==1{print substr($2,2)}')"
 
-# include jpegtran
-# jpegtran_href="http://jpegclub.org/jpegtran/"
-# jpegtran_version="$(jpegtran -version 2>&1 | awk '{print $3}')"
+# jpegtran_href="https://github.com/libjpeg-turbo/libjpeg-turbo"
+jpegtran_version="$(jpegtran -version 2>&1 | awk '{print $3}')"
 
-# include mozjpeg-cjpeg
 # mozjpeg_href="https://github.com/mozilla/mozjpeg"
-# mozjpeg_version="$(mozjpeg-cjpeg -version 2>&1 | awk '{print $3}')"
+mozjpeg_version="$(mozjpeg-cjpeg -version 2>&1 | awk '{print $3}')"
 
 
 # https://en.wikipedia.org/wiki/Portable_Network_Graphics
 
-# include advdef
 # advdef_href="https://github.com/amadvance/advancecomp"
-# advdef_version="$(advdef -V | awk '{print substr($2,2)}')"
+advdef_version="$(advdef -V | awk '{print substr($2,2)}')"
 
-# include advpng
 # advpng_href="https://github.com/amadvance/advancecomp"
-# advpng_version="$(advpng -V | awk '{print substr($2,2)}')"
+advpng_version="$(advpng -V | awk '{print substr($2,2)}')"
 
-# include ect
 # ect_href="https://github.com/fhanau/Efficient-Compression-Tool"
-# ect_version="$(ect | awk '/Version/{print $2}')"
+ect_version="$(ect | awk '/Version/{print $2}')"
 
-# include optipng
 # optipng_href="http://optipng.sourceforge.net/"
-# optipng_version="$(optipng -V | awk '/OptiPNG version/{print $3}')"
+optipng_version="$(optipng -V | awk '/OptiPNG version/{print $3}')"
 
-# include oxipng
 # oxipng_href="https://github.com/shssoichiro/oxipng"
-# oxipng_version="$(oxipng -V | awk '{print $2}')"
+oxipng_version="$(oxipng -V | awk '{print $2}')"
 
-# include pingo
 # pingo_href="https://css-ig.net/pingo"
-# pingo_version="$(pingo -V | awk '/pingo v/{print substr($2,2)}')"
+pingo_version="$(pingo -V | awk '/pingo v/{print substr($2,2)}')"
 
-# include pngcrush
 # pngcrush_href="https://pmt.sourceforge.io/pngcrush/"
-# pngcrush_version="$(pngcrush -version 2>&1 | awk -F, '/pngcrush/{print $1}' | awk -F' ' '{print $2}')"
+pngcrush_version="$(pngcrush -version 2>&1 | awk -F, '/pngcrush/{print $1}' | awk -F' ' '{print $2}')"
 
-# include pngoptimizercl
 # pngoptimizercl_href="https://github.com/hadrien-psydk/pngoptimizer"
-# pngoptimizercl_version="$(pngoptimizercl | awk 'NR==1{print $2}')"
+pngoptimizercl_version="$(pngoptimizercl | awk 'NR==1{print $2}')"
 
-# include pngout
-# pngout_href="http://www.jonof.id.au/kenutils"
-# pngout_version="20150319"
+# pngout_href="https://jonof.id.au/kenutils.html"
+pngout_version="20200115"
 
-# include pngquant
 # pngquant_href="https://github.com/kornelski/pngquant"
-# pngquant_version="$(pngquant -V | awk '{print $1}')"
+pngquant_version="$(pngquant -V | awk '{print $1}')"
 
-# include pngwolf
 # pngwolf_href="https://github.com/jibsen/pngwolf-zopfli"
-# pngwolf_version="$(pngwolf --version | awk 'NR==1{print $2}')"
+pngwolf_version="$(pngwolf --version | awk 'NR==1{print $2}')"
 
-# include truepng
 # truepng_href="http://x128.ho.ua/pngutils.html"
-# truepng_version="$(truepng | awk 'NR==1 {print $2}')"
+truepng_version="$(truepng | awk 'NR==1 {print $2}')"
 
-# include zopflipng
 # zopflipng_href="https://github.com/google/zopfli"
-# zopflipng_version="64c6f36"
+zopflipng_version="1.0.3"
+
+
+# https://en.wikipedia.org/wiki/Scalable_Vector_Graphics
+
+# scour_href="https://github.com/scour-project/scour"
+scour_version="$(scour --version)"
+
+# svgcleaner_href="https://github.com/RazrFalcon/svgcleaner"
+svgcleaner_version="$(svgcleaner --version | awk '{print $2}')"
+
+# svgo_href="https://github.com/svg/svgo"
+svgo_version="$(svgo -v)"
 
 
 # https://en.wikipedia.org/wiki/Structural_similarity
 
-# include butteraugli
 # butteraugli_href="https://github.com/google/butteraugli"
-# butteraugli_version="856a4da"
+butteraugli_version="71b18b6"
 
 # include compare
-# compare_href="https://www.imagemagick.org/script/compare.php"
-# compare_version="$(compare -version | awk 'NR==1 {print $3}')"
+# compare_href="https://imagemagick.org/script/compare.php"
+compare_version="$(compare -version | awk 'NR==1 {print $3}')"
 
 # include ssimulacra
 # ssimulacra_href="https://github.com/cloudinary/ssimulacra"
-# ssimulacra_version="2a830ab"
+ssimulacra_version="375726b"
 
 
 # https://unix.stackexchange.com/questions/40786/how-to-do-integer-float-calculations-in-bash-or-other-languages-frameworks
@@ -592,7 +591,7 @@ do
 done < input.txt
 
 awk -v FS="," -v OFS="," '{number[$3]=$4;processed[$3]++;if($6>0){compressed[$3]++};size[$3]+=$5;saving[$3]+=$6;time[$3]+=$7;genomes[$3]+=$8;}END{print "compressor,number,processed,compressed,size,saving,time,genomes";for(i in processed)print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i],genomes[i]|"sort -t, -k6gr -k4g -k7g"}' output.txt | separate | column -s, -t | colorize
-awk -v FS="," -v OFS="," '{number[$3]=$4;processed[$3]++;if($6>0){compressed[$3]++};size[$3]+=$5;saving[$3]+=$6;time[$3]+=$7;genomes[$3]+=$8;}END{print "compressor,number,processed,compressed,size,saving,time,genomes";for(i in processed)print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i],genomes[i]|"sort -t, -k6gr -k4g -k7g"}' output.txt | column -s, -t > result.txt
+awk -v FS="," -v OFS="," '{number[$3]=$4;processed[$3]++;if($6>0){compressed[$3]++};size[$3]+=$5;saving[$3]+=$6;time[$3]+=$7;genomes[$3]+=$8;}END{print "compressor,number,processed,compressed,size,saving,time,genomes";for(i in processed)print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i],genomes[i]|"sort -t, -k6gr -k4g -k7g"}' output.txt | column -s, -t >> result.txt
 echo >> result.txt
 
 while IFS=, read -r image name format size dimensions type colorspace colors depth compression entropy
