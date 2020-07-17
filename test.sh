@@ -145,7 +145,7 @@ trim png.txt
 
 # https://en.wikipedia.org/wiki/Standard_test_image
 
-# wget "http://www.cs.cmu.edu/~chuck/lennapg/lena_std.tif"
+# png
 
 # wget "http://r0k.us/graphics/kodak/kodak/kodim01.png"
 # wget "http://r0k.us/graphics/kodak/kodak/kodim02.png"
@@ -188,9 +188,11 @@ wget "https://imgs.xkcd.com/comics/random_number.png"
 # wget "http://s3.amazonaws.com/theoatmeal-img/comics/definitely/definitely.png"
 # wget "http://s3.amazonaws.com/theoatmeal-img/comics/cats_schrodinger/cats_schrodinger.png"
 
+# jpg
+
 # wget "https://assets.toggl.com/images/toggl-how-to-save-the-princess-in-8-programming-languages.jpg"
-# wget "https://24t9d72kcs873my15o9hr1pu-wpengine.netdna-ssl.com/wp-content/uploads/2017/04/toggl-how-to-kill-the-dragon-with-9-programming-languages.jpg"
-# wget "https://24t9d72kcs873my15o9hr1pu-wpengine.netdna-ssl.com/wp-content/uploads/2018/01/toggl-how-to-create-horse-with-programming.jpg"
+# wget "https://toggl.com/blog/wp-content/uploads/2017/04/toggl-how-to-kill-the-dragon-with-9-programming-languages.jpg"
+# wget "https://toggl.com/blog/wp-content/uploads/2018/08/toggl-how-to-create-horse-with-programming.jpg"
 
 # wget "https://upload.wikimedia.org/wikipedia/commons/6/6a/Mona_Lisa.jpg"
 # wget "https://upload.wikimedia.org/wikipedia/commons/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg"
