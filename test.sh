@@ -466,7 +466,6 @@ start() {
 
   echo "$image,$output,$compressor,$number,$size,$saving,$time,$genomes,$diff" >> output.txt
   echo "$output" >> out.txt
-  echo "$output" >> files.txt
 }
 
 
@@ -501,30 +500,6 @@ newline() {
 }
 
 
-# https://askubuntu.com/questions/830776/remove-file-but-exclude-all-files-in-a-list
-# https://mywiki.wooledge.org/ParsingLs
-
-# stdout.txt
-# stderr.txt
-# input.txt
-# output.txt
-# in.txt
-# out.txt
-# files.txt
-# test.txt
-# result.txt
-
-clean() {
-  for file in *
-  do
-    if ! grep -qxFe "$file" files.txt
-    then
-      rm -f "$file"
-    fi
-  done
-}
-
-
 # https://stackoverflow.com/questions/39319539/what-is-the-most-portable-way-to-write-an-iteration-for-while-loop-in-a-posi
 # https://davidwalsh.name/first-frame-animated-gif
 # https://imagemagick.org/script/identify.php
@@ -534,13 +509,6 @@ clean() {
 
 if [ ! -f input.txt ]
 then
-  echo "test.sh" > files.txt
-  echo "test.txt" >> files.txt
-  echo "result.txt" >> files.txt
-  echo "files.txt" >> files.txt
-  echo "input.txt" >> files.txt
-  echo "output.txt" >> files.txt
-
   files="$(find . -type f -name "*.gif" -o -name "*.jpg" -o -name "*.png")"
 
   for file in $files
@@ -558,12 +526,10 @@ then
     entropy="$(identify -format "%[entropy]" "$file[0]")"
 
     echo "$image,$name,$format,$size,$dimensions,$type,$colorspace,$colors,$depth,$compression,$entropy" >> input.txt
-    echo "$image" >> files.txt
   done
 fi
 
 
-# clean
 newline
 
 
@@ -642,7 +608,6 @@ do
 done < input.txt
 
 
-# clean
 newline
 
 
