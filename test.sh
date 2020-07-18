@@ -258,7 +258,7 @@ ssimulacra="ssimulacra 375726b"
 # https://unix.stackexchange.com/questions/30173/how-to-remove-duplicate-lines-inside-a-text-file
 # https://unix.stackexchange.com/questions/104881/remove-particular-characters-from-a-variable-using-bash
 
-echo "$(uname -a)" > result.txt
+uname -a > result.txt
 echo >> result.txt
 
 trim() {
@@ -368,7 +368,7 @@ start() {
 
   stoptimer "$timer"
 
-  if ! identify "$output[0]" >/dev/null 2>&1
+  if ! identify "${output}[0]" >/dev/null 2>&1
   then
     cat stdout.txt stderr.txt
     return
@@ -477,17 +477,17 @@ then
 
   for file in $files
   do
-    image="$(identify -format "%f" "$file[0]")"
-    name="$(identify -format "%t" "$file[0]")"
-    format="$(identify -format "%m" "$file[0]")"
+    image="$(identify -format "%f" "${file}[0]")"
+    name="$(identify -format "%t" "${file}[0]")"
+    format="$(identify -format "%m" "${file}[0]")"
     size="$(wc -c < "$file")"
-    dimensions="$(identify -format "%G" "$file[0]")"
-    type="$(identify -format "%[type]" "$file[0]")"
-    colorspace="$(identify -format "%[colorspace]" "$file[0]")"
-    colors="$(identify -format "%k" "$file[0]")"
-    depth="$(identify -format "%z-bit" "$file[0]")"
-    compression="$(identify -format "%C" "$file[0]")"
-    entropy="$(identify -format "%[entropy]" "$file[0]")"
+    dimensions="$(identify -format "%G" "${file}[0]")"
+    type="$(identify -format "%[type]" "${file}[0]")"
+    colorspace="$(identify -format "%[colorspace]" "${file}[0]")"
+    colors="$(identify -format "%k" "${file}[0]")"
+    depth="$(identify -format "%z-bit" "${file}[0]")"
+    compression="$(identify -format "%C" "${file}[0]")"
+    entropy="$(identify -format "%[entropy]" "${file}[0]")"
 
     echo "$image,$name,$format,$size,$dimensions,$type,$colorspace,$colors,$depth,$compression,$entropy" >> input.txt
   done
