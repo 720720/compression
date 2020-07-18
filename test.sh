@@ -23,7 +23,7 @@ test="ssim"
 cat > gif.txt <<'EOF'
   gifsicle,,input -o output
   gifsicle,-O1,input -o output
-gifsicle,-O2,input -o output
+  gifsicle,-O2,input -o output
 gifsicle,-O3,input -o output
 EOF
 
@@ -220,7 +220,7 @@ guetzli="guetzli 1.0.1"
 jpegrecompress="jpegrecompress $(jpeg-recompress -V)"
 jpegoptim="jpegoptim $(jpegoptim -V | awk 'NR==1{print substr($2,2)}')"
 jpegtran="jpegtran $(jpegtran -version 2>&1 | awk '{print $3}')"
-mozjpeg="mozjpeg $(mozjpeg-cjpeg -version 2>&1 | awk '{print $3}')"
+mozjpegcjpeg="mozjpeg $(mozjpeg-cjpeg -version 2>&1 | awk '{print $3}')"
 
 # https://en.wikipedia.org/wiki/Portable_Network_Graphics
 
@@ -256,6 +256,7 @@ ssimulacra="ssimulacra 375726b"
 # https://stackoverflow.com/questions/4286469/how-to-parse-a-csv-file-in-bash
 # http://www.tldp.org/LDP/abs/html/ivr.html
 # https://unix.stackexchange.com/questions/30173/how-to-remove-duplicate-lines-inside-a-text-file
+# https://unix.stackexchange.com/questions/104881/remove-particular-characters-from-a-variable-using-bash
 
 echo "$(uname -a)" > result.txt
 echo >> result.txt
@@ -274,7 +275,8 @@ trim() {
 
       if ! grep -qw "$compressor" result.txt
       then
-        eval echo "\$$compressor" >> result.txt
+        string=$(echo "$compressor" | tr -d -)
+        eval echo "\$$string" >> result.txt
       fi
     else
       printf '%s\n' "$compressor not available"
