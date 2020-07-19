@@ -13,10 +13,16 @@ iterations=2
 test="ssim"
 
 
-# mktemp
+# dir
 
-tmp=$(mktemp -d)
-cd "$tmp"
+if [ -d "${1-}" ]
+then
+  dir="$1"
+  cd "$dir"
+else
+  dir=$(mktemp -d)
+  cd "$dir"
+fi
 
 
 # compression
