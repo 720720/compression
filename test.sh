@@ -476,6 +476,7 @@ colorize() {
 # https://imagemagick.org/script/identify.php
 # https://imagemagick.org/script/escape.php
 # https://imagemagick.org/script/command-line-processing.php
+# https://imagemagick.org/script/formats.php
 
 
 if [ ! -f input.txt ]
@@ -484,19 +485,22 @@ then
 
   for file in $files
   do
-    image="$(identify -format "%f" "${file}[0]")"
-    name="$(identify -format "%t" "${file}[0]")"
-    format="$(identify -format "%m" "${file}[0]")"
-    size="$(wc -c < "$file")"
-    dimensions="$(identify -format "%G" "${file}[0]")"
-    type="$(identify -format "%[type]" "${file}[0]")"
-    colorspace="$(identify -format "%[colorspace]" "${file}[0]")"
-    colors="$(identify -format "%k" "${file}[0]")"
-    depth="$(identify -format "%z-bit" "${file}[0]")"
-    compression="$(identify -format "%C" "${file}[0]")"
-    entropy="$(identify -format "%[entropy]" "${file}[0]")"
+    if identify "$file[0]" >/dev/null 2>&1
+    then
+      image="$(identify -format "%f" "${file}[0]")"
+      name="$(identify -format "%t" "${file}[0]")"
+      format="$(identify -format "%m" "${file}[0]")"
+      size="$(wc -c < "$file")"
+      dimensions="$(identify -format "%G" "${file}[0]")"
+      type="$(identify -format "%[type]" "${file}[0]")"
+      colorspace="$(identify -format "%[colorspace]" "${file}[0]")"
+      colors="$(identify -format "%k" "${file}[0]")"
+      depth="$(identify -format "%z-bit" "${file}[0]")"
+      compression="$(identify -format "%C" "${file}[0]")"
+      entropy="$(identify -format "%[entropy]" "${file}[0]")"
 
-    echo "$image,$name,$format,$size,$dimensions,$type,$colorspace,$colors,$depth,$compression,$entropy" >> input.txt
+      echo "$image,$name,$format,$size,$dimensions,$type,$colorspace,$colors,$depth,$compression,$entropy" >> input.txt
+    fi
   done
 fi
 
