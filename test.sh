@@ -3,11 +3,6 @@
 set -eu
 
 
-# https://unix.stackexchange.com/questions/153862/remove-all-files-directories-except-for-one-file
-
-find . ! -name 'test.sh' -type f -exec rm -f {} +
-
-
 # iterations
 
 iterations=2
@@ -16,6 +11,12 @@ iterations=2
 # test="butteraugli,ssimulacra,ssim,dssim,psnr,mae,fuzz,ncc"
 
 test="ssim"
+
+
+# mktemp
+
+tmp=$(mktemp -d)
+cd "$tmp"
 
 
 # compression
