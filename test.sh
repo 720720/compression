@@ -532,10 +532,10 @@ do
 
   echo "$image" > in.txt
 
-  case $(file --brief --mime-type "$image") in
-    image/gif) list="gif.txt" ;;
-    image/jpeg) list="jpg.txt" ;;
-    image/png) list="png.txt" ;;
+  case $format in
+    GIF) list="gif.txt" ;;
+    JPEG) list="jpg.txt" ;;
+    PNG) list="png.txt" ;;
   esac
 
   i=1
