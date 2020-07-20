@@ -341,12 +341,13 @@ stoptimer() {
 start() {
   number="$1"
   image="$2"
-  compressor="$3"
-  options="$4"
-  command="$5"
-  input="$6"
-  output="$7"
-  copy="$8"
+  format="$3"
+  compressor="$4"
+  options="$5"
+  command="$6"
+  input="$7"
+  output="$8"
+  copy="$9"
 
   if grep -q ",$output," output.txt
   then
@@ -364,7 +365,7 @@ start() {
     cp "$input" "$output"
   fi
 
-  compressor="$(awk -F, -v input="$input" -v compressor="$compressor" -v options="$options" 'BEGIN{if(options)compressor=compressor" "options}$2==input{compressor=$3" "compressor}END{print compressor}' output.txt)"
+  compressor="$(awk -F, -v input="$input" -v compressor="$compressor" -v options="$options" 'BEGIN{if(options)compressor=compressor" "options}$3==input{compressor=$4" "compressor}END{print compressor}' output.txt)"
 
   timer="$(mktemp)"
   starttimer "$timer" "$compressor" &
@@ -384,7 +385,7 @@ start() {
   byte=$(wc -c < "$image")
   size=$(wc -c < "$output")
   saving=$(awk -v size="$size" -v byte="$byte" 'BEGIN{print (1-size/byte)*100}')
-  time=$(awk -F, -v input="$input" -v start="$start" -v stop="$stop" 'BEGIN{time=(stop-start)/1000000000}$2==input{time+=$7}END{print time}' output.txt)
+  time=$(awk -F, -v input="$input" -v start="$start" -v stop="$stop" 'BEGIN{time=(stop-start)/1000000000}$3==input{time+=$8}END{print time}' output.txt)
   genomes=$(awk 'BEGIN{genomes=0}/number of genomes/{genomes+=$5}END{print genomes}' stdout.txt)
 
 
@@ -439,7 +440,7 @@ start() {
   fi
 
 
-  echo "$image,$output,$compressor,$number,$size,$saving,$time,$genomes,$delta" >> output.txt
+  echo "$image,$format,$output,$compressor,$number,$size,$saving,$time,$genomes,$delta" >> output.txt
   echo "$output" >> out.txt
 }
 
@@ -554,7 +555,7 @@ do
         arguments="$(echo "$arguments" | sed "s/input/$input/" | sed "s/output/$output/")"
         command="$compressor $options $arguments"
 
-        start "$i" "$image" "$compressor" "$options" "$command" "$input" "$output" "$copy"
+        start "$i" "$image" "$format" "$compressor" "$options" "$command" "$input" "$output" "$copy"
       done < "$list"
     done < in.txt
 
@@ -563,22 +564,22 @@ do
     i=$((i + 1))
   done
 
-  awk -v FS="," -v OFS="," -v test="$test" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",test}$1==image{for(i=3;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | separate | column -s, -t | colorize
+  awk -v FS="," -v OFS="," -v test="$test" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",test}$1==image{for(i=4;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | separate | column -s, -t | colorize
   echo
 
   tock
   echo
 done < input.txt
 
-awk -v FS="," -v OFS="," '{number[$3]=$4;processed[$3]++;if($6>0){compressed[$3]++};size[$3]+=$5;saving[$3]+=$6;time[$3]+=$7;genomes[$3]+=$8;}END{print "compressor,number,processed,compressed,size,saving,time,genomes";for(i in processed)print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i],genomes[i]|"sort -t, -k6gr -k4g -k7g"}' output.txt | separate | column -s, -t | colorize
-awk -v FS="," -v OFS="," '{number[$3]=$4;processed[$3]++;if($6>0){compressed[$3]++};size[$3]+=$5;saving[$3]+=$6;time[$3]+=$7;genomes[$3]+=$8;}END{print "compressor,number,processed,compressed,size,saving,time,genomes";for(i in processed)print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i],genomes[i]|"sort -t, -k6gr -k4g -k7g"}' output.txt | column -s, -t >> result.txt
+awk -v FS="," -v OFS="," '{number[$4]=$5;processed[$4]++;if($7>0){compressed[$4]++};size[$4]+=$6;saving[$4]+=$7;time[$4]+=$8;genomes[$4]+=$9;}END{print "compressor,number,processed,compressed,size,saving,time,genomes";for(i in processed)print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i],genomes[i]|"sort -t, -k6gr -k4g -k7g"}' output.txt | separate | column -s, -t | colorize
+awk -v FS="," -v OFS="," '{number[$4]=$5;processed[$4]++;if($7>0){compressed[$4]++};size[$4]+=$6;saving[$4]+=$7;time[$4]+=$8;genomes[$4]+=$9;}END{print "compressor,number,processed,compressed,size,saving,time,genomes";for(i in processed)print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i],genomes[i]|"sort -t, -k6gr -k4g -k7g"}' output.txt | column -s, -t >> result.txt
 echo >> result.txt
 
 while IFS=, read -r image name format size dimensions type colorspace colors depth compression entropy
 do
   printf "image: %s\nname: %s\nformat: %s\nsize: %s\ndimensions: %s\ntype: %s\ncolorspace: %s\ncolors: %s\ndepth: %s\ncompression: %s\nentropy: %s\n" "$image" "$name" "$format" "$size" "$dimensions" "$type" "$colorspace" "$colors" "$depth" "$compression" "$entropy" >> result.txt
   echo >> result.txt
-  awk -v FS="," -v OFS="," -v test="$test" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",test}$1==image{for(i=3;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | column -s, -t >> result.txt
+  awk -v FS="," -v OFS="," -v test="$test" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",test}$1==image{for(i=4;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | column -s, -t >> result.txt
   echo >> result.txt
 done < input.txt
 
