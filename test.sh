@@ -533,9 +533,9 @@ do
   echo "$image" > in.txt
 
   case $format in
-    GIF) list="gif.txt" ;;
-    JPEG) list="jpg.txt" ;;
-    PNG) list="png.txt" ;;
+    GIF) commands="gif.txt" ;;
+    JPEG) commands="jpg.txt" ;;
+    PNG) commands="png.txt" ;;
   esac
 
   i=1
@@ -559,7 +559,7 @@ do
         command="$compressor $options $arguments"
 
         start "$i" "$image" "$format" "$compressor" "$options" "$command" "$input" "$output" "$copy"
-      done < "$list"
+      done < "$commands"
     done < in.txt
 
     mv out.txt in.txt
