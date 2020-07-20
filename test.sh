@@ -482,25 +482,28 @@ colorize() {
 
 if [ ! -f input.txt ]
 then
-  files="$(find . -type f -name "*.gif" -o -name "*.jpg" -o -name "*.png")"
-
-  for file in $files
+  for file in ./*
   do
-    if identify "$file[0]" >/dev/null 2>&1
-    then
-      image="$(identify -format "%f" "${file}[0]")"
-      name="$(identify -format "%t" "${file}[0]")"
-      format="$(identify -format "%m" "${file}[0]")"
-      size="$(wc -c < "$file")"
-      dimensions="$(identify -format "%G" "${file}[0]")"
-      type="$(identify -format "%[type]" "${file}[0]")"
-      colorspace="$(identify -format "%[colorspace]" "${file}[0]")"
-      colors="$(identify -format "%k" "${file}[0]")"
-      depth="$(identify -format "%z-bit" "${file}[0]")"
-      compression="$(identify -format "%C" "${file}[0]")"
-      entropy="$(identify -format "%[entropy]" "${file}[0]")"
+    mimetype=$(file --brief --mime-type "$file")
 
-      echo "$image,$name,$format,$size,$dimensions,$type,$colorspace,$colors,$depth,$compression,$entropy" >> input.txt
+    if [ "$mimetype" = "image/gif" ] || [ "$mimetype" = "image/jpeg" ] || [ "$mimetype" = "image/png" ]
+    then
+      if identify "$file[0]" >/dev/null 2>&1
+      then
+        image="$(identify -format "%f" "${file}[0]")"
+        name="$(identify -format "%t" "${file}[0]")"
+        format="$(identify -format "%m" "${file}[0]")"
+        size="$(wc -c < "$file")"
+        dimensions="$(identify -format "%G" "${file}[0]")"
+        type="$(identify -format "%[type]" "${file}[0]")"
+        colorspace="$(identify -format "%[colorspace]" "${file}[0]")"
+        colors="$(identify -format "%k" "${file}[0]")"
+        depth="$(identify -format "%z-bit" "${file}[0]")"
+        compression="$(identify -format "%C" "${file}[0]")"
+        entropy="$(identify -format "%[entropy]" "${file}[0]")"
+
+        echo "$image,$name,$format,$size,$dimensions,$type,$colorspace,$colors,$depth,$compression,$entropy" >> input.txt
+      fi
     fi
   done
 fi
