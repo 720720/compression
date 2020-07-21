@@ -472,6 +472,48 @@ colorize() {
 }
 
 
+image() {
+  awk -v FS="," -v OFS="," -v image="$1" -v test="$2" '
+  BEGIN {
+    print "compressor","number","size","saving","time","genomes",test
+  }
+
+  $1 == image {
+    r = ""
+    for (i = 4; i < NF; i++) { r = r $i OFS }
+    r = r $NF
+    print r | "sort -t, -k4gr -k5g -k2g"
+  }
+  ' output.txt
+}
+
+
+total() {
+  awk -v FS="," -v OFS="," -v f="$f" '
+  {
+    format[$4] = $2
+    number[$4] = $5
+    processed[$4]++
+    if ($7 > 0) { compressed[$4]++ }
+    size[$4] += $6
+    saving[$4] += $7
+    time[$4] += $8
+    genomes[$4] += $9
+  }
+
+  END {
+    print "compressor,number,processed,compressed,size,saving,time,genomes"
+
+    for (i in processed) {
+      if (format[i] == f) {
+        print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i],genomes[i] | "sort -t, -k6gr -k7g -k2g -k4g"
+      }
+    }
+  }
+  ' output.txt
+}
+
+
 # https://stackoverflow.com/questions/39319539/what-is-the-most-portable-way-to-write-an-iteration-for-while-loop-in-a-posi
 # https://davidwalsh.name/first-frame-animated-gif
 # https://imagemagick.org/script/identify.php
@@ -507,9 +549,6 @@ then
     fi
   done
 fi
-
-
-echo
 
 
 # http://www.theunixschool.com/2012/05/shell-read-text-or-csv-file-and-extract.html
@@ -567,27 +606,32 @@ do
     i=$((i + 1))
   done
 
-  awk -v FS="," -v OFS="," -v test="$test" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",test}$1==image{for(i=4;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | separate | column -s, -t | colorize
+  image "$image" "$test" | separate | column -s, -t | colorize
   echo
 
   tock
   echo
 done < input.txt
 
-awk -v FS="," -v OFS="," '{number[$4]=$5;processed[$4]++;if($7>0){compressed[$4]++};size[$4]+=$6;saving[$4]+=$7;time[$4]+=$8;genomes[$4]+=$9;}END{print "compressor,number,processed,compressed,size,saving,time,genomes";for(i in processed)print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i],genomes[i]|"sort -t, -k6gr -k4g -k7g"}' output.txt | separate | column -s, -t | colorize
-awk -v FS="," -v OFS="," '{number[$4]=$5;processed[$4]++;if($7>0){compressed[$4]++};size[$4]+=$6;saving[$4]+=$7;time[$4]+=$8;genomes[$4]+=$9;}END{print "compressor,number,processed,compressed,size,saving,time,genomes";for(i in processed)print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i],genomes[i]|"sort -t, -k6gr -k4g -k7g"}' output.txt | column -s, -t >> result.txt
-echo >> result.txt
+
+formats=$(awk -F',' 'FNR==NR{a[$2]++;next}END{for(i in a)print i}' output.txt)
+
+for f in $formats
+do
+  total | separate | column -s, -t | colorize
+  echo
+  total | column -s, -t >> result.txt
+  echo >> result.txt
+done
+
 
 while IFS=, read -r image name format size dimensions type colorspace colors depth compression entropy
 do
   printf "image: %s\nname: %s\nformat: %s\nsize: %s\ndimensions: %s\ntype: %s\ncolorspace: %s\ncolors: %s\ndepth: %s\ncompression: %s\nentropy: %s\n" "$image" "$name" "$format" "$size" "$dimensions" "$type" "$colorspace" "$colors" "$depth" "$compression" "$entropy" >> result.txt
   echo >> result.txt
-  awk -v FS="," -v OFS="," -v test="$test" -v image="$image" 'BEGIN{print "compressor","number","size","saving","time","genomes",test}$1==image{for(i=4;i<NF;i++)printf "%s%s",$i,OFS;print $NF}' output.txt | awk 'NR==1;NR>1{print|"sort -t, -k4gr -k2g -k5g"}' | column -s, -t >> result.txt
+  image "$image" "$test" | column -s, -t >> result.txt
   echo >> result.txt
 done < input.txt
-
-
-echo
 
 
 # https://www.unix.com/shell-programming-and-scripting/176837-bash-hide-terminal-cursor.html
