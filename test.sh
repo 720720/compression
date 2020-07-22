@@ -316,7 +316,7 @@ tock() { awk "BEGIN{print ($(date +%s%N)-$tick)/1000000000}"; }
 # https://stackoverflow.com/questions/16896369/show-elapsed-time-every-second-running-a-bash-script
 # https://stackoverflow.com/questions/5861428/bash-script-erase-previous-line
 
-starttimer() {
+one() {
   s=0
   while [ -e "$1" ]
   do
@@ -326,7 +326,7 @@ starttimer() {
   done
 }
 
-stoptimer() {
+two() {
   rm -f "$1"
 }
 
@@ -368,13 +368,13 @@ start() {
   compressor="$(awk -F, -v input="$input" -v compressor="$compressor" -v options="$options" 'BEGIN{if(options)compressor=compressor" "options}$3==input{compressor=$4" "compressor}END{print compressor}' output.txt)"
 
   timer="$(mktemp)"
-  starttimer "$timer" "$compressor" &
+  one "$timer" "$compressor" &
 
   start=$(date +%s%N)
   eval "$command" 1>stdout.txt 2>stderr.txt
   stop=$(date +%s%N)
 
-  stoptimer "$timer"
+  two "$timer"
 
   if ! identify "${output}[0]" >/dev/null 2>&1
   then
