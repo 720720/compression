@@ -531,7 +531,7 @@ do
 
   if [ "$mimetype" = "image/gif" ] || [ "$mimetype" = "image/jpeg" ] || [ "$mimetype" = "image/png" ]
   then
-    if identify "$file[0]" >/dev/null 2>&1
+    if identify "${file}[0]" >/dev/null 2>&1
     then
       image="$(identify -format "%f" "${file}[0]")"
       name="$(identify -format "%t" "${file}[0]")"
