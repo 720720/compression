@@ -403,7 +403,6 @@ start() {
   size=$(wc -c < "$output")
   saving=$(awk -v size="$size" -v byte="$byte" 'BEGIN{print (1-size/byte)*100}')
   time=$(awk -F, -v input="$input" -v start="$start" -v stop="$stop" 'BEGIN{time=(stop-start)/1000000000}$3==input{time+=$8}END{print time}' output.txt)
-  genomes=$(awk 'BEGIN{genomes=0}/number of genomes/{genomes+=$5}END{print genomes}' stdout.txt)
 
 
   delta="$test"
@@ -457,7 +456,7 @@ start() {
   fi
 
 
-  echo "$image,$format,$output,$compressor,$number,$size,$saving,$time,$genomes,$delta" >> output.txt
+  echo "$image,$format,$output,$compressor,$number,$size,$saving,$time,$delta" >> output.txt
   echo "$output" >> out.txt
 }
 
@@ -492,7 +491,7 @@ colorize() {
 image() {
   awk -v FS="," -v OFS="," -v image="$1" -v test="$2" '
   BEGIN {
-    print "compressor","number","size","saving","time","genomes",test
+    print "compressor","number","size","saving","time",test
   }
 
   $1 == image {
@@ -515,15 +514,14 @@ total() {
     size[$4] += $6
     saving[$4] += $7
     time[$4] += $8
-    genomes[$4] += $9
   }
 
   END {
-    print "compressor,number,processed,compressed,size,saving,time,genomes"
+    print "compressor,number,processed,compressed,size,saving,time"
 
     for (i in processed) {
       if (format[i] == f) {
-        print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i],genomes[i] | "sort -t, -k6gr -k7g -k2g -k4g"
+        print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i] | "sort -t, -k6gr -k7g -k2g -k4g"
       }
     }
   }
