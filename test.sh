@@ -13,16 +13,18 @@ iterations=2
 test="ssim"
 
 
-# dir
+# tmp
+
+tmp=$(mktemp -d)
 
 if [ -d "${1-}" ]
 then
-  dir="$1"
-  cd "$dir"
-else
-  dir=$(mktemp -d)
-  cd "$dir"
+  find "$1" -type f -name "*.gif" -exec cp {} "$tmp" \;
+  find "$1" -type f -name "*.jpg" -exec cp {} "$tmp" \;
+  find "$1" -type f -name "*.png" -exec cp {} "$tmp" \;
 fi
+
+cd "$tmp"
 
 
 # compression
@@ -523,32 +525,35 @@ total() {
 # https://imagemagick.org/script/formats.php
 
 
+for file in ./*
+do
+  mimetype=$(file --brief --mime-type "$file")
+
+  if [ "$mimetype" = "image/gif" ] || [ "$mimetype" = "image/jpeg" ] || [ "$mimetype" = "image/png" ]
+  then
+    if identify "$file[0]" >/dev/null 2>&1
+    then
+      image="$(identify -format "%f" "${file}[0]")"
+      name="$(identify -format "%t" "${file}[0]")"
+      format="$(identify -format "%m" "${file}[0]")"
+      size="$(wc -c < "$file")"
+      dimensions="$(identify -format "%G" "${file}[0]")"
+      type="$(identify -format "%[type]" "${file}[0]")"
+      colorspace="$(identify -format "%[colorspace]" "${file}[0]")"
+      colors="$(identify -format "%k" "${file}[0]")"
+      depth="$(identify -format "%z-bit" "${file}[0]")"
+      compression="$(identify -format "%C" "${file}[0]")"
+      entropy="$(identify -format "%[entropy]" "${file}[0]")"
+
+      echo "$image,$name,$format,$size,$dimensions,$type,$colorspace,$colors,$depth,$compression,$entropy" >> input.txt
+    fi
+  fi
+done
+
 if [ ! -f input.txt ]
 then
-  for file in ./*
-  do
-    mimetype=$(file --brief --mime-type "$file")
-
-    if [ "$mimetype" = "image/gif" ] || [ "$mimetype" = "image/jpeg" ] || [ "$mimetype" = "image/png" ]
-    then
-      if identify "$file[0]" >/dev/null 2>&1
-      then
-        image="$(identify -format "%f" "${file}[0]")"
-        name="$(identify -format "%t" "${file}[0]")"
-        format="$(identify -format "%m" "${file}[0]")"
-        size="$(wc -c < "$file")"
-        dimensions="$(identify -format "%G" "${file}[0]")"
-        type="$(identify -format "%[type]" "${file}[0]")"
-        colorspace="$(identify -format "%[colorspace]" "${file}[0]")"
-        colors="$(identify -format "%k" "${file}[0]")"
-        depth="$(identify -format "%z-bit" "${file}[0]")"
-        compression="$(identify -format "%C" "${file}[0]")"
-        entropy="$(identify -format "%[entropy]" "${file}[0]")"
-
-        echo "$image,$name,$format,$size,$dimensions,$type,$colorspace,$colors,$depth,$compression,$entropy" >> input.txt
-      fi
-    fi
-  done
+  echo "no images found"
+  exit 1
 fi
 
 
