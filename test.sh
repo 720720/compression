@@ -22,6 +22,7 @@ then
   find "$1" -type f -name "*.gif" -exec cp {} "$tmp" \;
   find "$1" -type f -name "*.jpg" -exec cp {} "$tmp" \;
   find "$1" -type f -name "*.png" -exec cp {} "$tmp" \;
+  find "$1" -type f -name "*.svg" -exec cp {} "$tmp" \;
 fi
 
 cd "$tmp"
@@ -131,6 +132,14 @@ optipng,-o7,output
   zopflipng,--iterations=1000,input output
 EOF
 
+cat > svg.txt <<'EOF'
+scour,,input output
+
+svgcleaner,,input output
+
+svgo,,-i input -o output
+EOF
+
 
 # https://en.wikipedia.org/wiki/Standard_test_image
 
@@ -192,6 +201,10 @@ wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/dachshund.png"
 
 # wget "http://s3.amazonaws.com/theoatmeal-img/comics/definitely/definitely.png"
 # wget "http://s3.amazonaws.com/theoatmeal-img/comics/cats_schrodinger/cats_schrodinger.png"
+
+# svg
+
+wget "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg"
 
 
 # https://www.unix.com/shell-programming-and-scripting/176837-bash-hide-terminal-cursor.html
@@ -298,6 +311,7 @@ trim() {
 trim gif.txt
 trim jpg.txt
 trim png.txt
+trim svg.txt
 
 echo >> result.txt
 
@@ -529,7 +543,7 @@ for file in ./*
 do
   mimetype=$(file --brief --mime-type "$file")
 
-  if [ "$mimetype" = "image/gif" ] || [ "$mimetype" = "image/jpeg" ] || [ "$mimetype" = "image/png" ]
+  if [ "$mimetype" = "image/gif" ] || [ "$mimetype" = "image/jpeg" ] || [ "$mimetype" = "image/png" ] || [ "$mimetype" = "image/svg+xml" ]
   then
     if identify "${file}[0]" >/dev/null 2>&1
     then
@@ -581,6 +595,7 @@ do
     GIF) commands="gif.txt" ;;
     JPEG) commands="jpg.txt" ;;
     PNG) commands="png.txt" ;;
+    SVG) commands="svg.txt" ;;
   esac
 
   i=1
