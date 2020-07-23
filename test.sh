@@ -207,22 +207,6 @@ wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/dachshund.png"
 wget "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg"
 
 
-# https://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
-# https://stackoverflow.com/questions/12314451/accessing-bash-command-line-args-vs
-# https://unix.stackexchange.com/questions/314032/how-to-use-arguments-like-1-2-in-a-for-loop
-
-include() {
-  for command
-  do
-    if ! command -v "$command" >/dev/null 2>&1
-    then
-      echo "$command not available"
-      exit 1
-    fi
-  done
-}
-
-
 # https://github.com/nathanaeljones/imaging-wiki
 
 imagemagick="imagemagick $(magick -version | awk 'NR==1 {print $3}')"
