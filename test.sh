@@ -455,11 +455,12 @@ colorize() {
 
 image() {
   awk -v FS="," -v OFS="," -v image="$1" -v test="$2" '
-  BEGIN {
-    print "compressor","number","size","saving","time",test
-  }
-
   $1 == image {
+    if (i < 1) {
+      print "compressor","number","size","saving","time",test
+      i++
+    }
+
     r = ""
     for (i = 4; i < NF; i++) { r = r $i OFS }
     r = r $NF
@@ -482,11 +483,13 @@ total() {
   }
 
   END {
-    print "compressor,number,processed,compressed,size,saving,time"
+    if (NR > 0) {
+      print "compressor,number,processed,compressed,size,saving,time"
 
-    for (i in processed) {
-      if (format[i] == f) {
-        print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i] | "sort -t, -k6gr -k7g -k2g -k4g"
+      for (i in processed) {
+        if (format[i] == f) {
+          print i,number[i],processed[i]+0,compressed[i]+0,size[i],saving[i]/processed[i],time[i] | "sort -t, -k6gr -k7g -k2g -k4g"
+        }
       }
     }
   }
