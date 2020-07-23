@@ -207,11 +207,6 @@ wget "http://www.bluebison.net/llama/wp-content/uploads/2017/12/dachshund.png"
 wget "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg"
 
 
-# https://www.unix.com/shell-programming-and-scripting/176837-bash-hide-terminal-cursor.html
-
-# tput civis
-
-
 # https://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
 # https://stackoverflow.com/questions/12314451/accessing-bash-command-line-args-vs
 # https://unix.stackexchange.com/questions/314032/how-to-use-arguments-like-1-2-in-a-for-loop
@@ -653,7 +648,4 @@ do
 done < input.txt
 
 
-# https://www.unix.com/shell-programming-and-scripting/176837-bash-hide-terminal-cursor.html
-
-# tput cnorm
 
