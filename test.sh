@@ -249,6 +249,7 @@ echo >> result.txt
 
 trim() {
   mv "$1" tmp.txt
+  touch "$1"
 
   sed -i '/^\s*$/d' tmp.txt
   sed -i '/^ /d' tmp.txt
@@ -265,7 +266,7 @@ trim() {
         eval echo "\$$string" >> result.txt
       fi
     else
-      printf '%s\n' "$compressor not available"
+      printf '\033[91m%s\n\n\033[0m' "$compressor not available"
     fi
   done < tmp.txt
 
