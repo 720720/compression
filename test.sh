@@ -102,25 +102,10 @@ optipng,-o7,output
 
   pngquant,,output
 
-  pngwolf,--verbose-summary --strip-optional,--in=input --out=output
-  pngwolf,--verbose-summary --strip-optional --estimator=libdeflate,--in=input --out=output
-  pngwolf,--verbose-summary --strip-optional --estimator=zlib,--in=input --out=output
-  pngwolf,--verbose-summary --strip-optional --estimator=zopfli,--in=input --out=output
-
-  pngwolf,--verbose-summary --strip-optional --max-stagnate-time=1,--in=input --out=output
-  pngwolf,--verbose-summary --strip-optional --max-stagnate-time=10,--in=input --out=output
-  pngwolf,--verbose-summary --strip-optional --max-stagnate-time=100,--in=input --out=output
-  pngwolf,--verbose-summary --strip-optional --max-stagnate-time=1000,--in=input --out=output
-
-  pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=1,--in=input --out=output
-  pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=10,--in=input --out=output
-  pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=100,--in=input --out=output
-  pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=1000,--in=input --out=output
-
-  pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=1 --estimator=zopfli,--in=input --out=output
-  pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=10 --estimator=zopfli,--in=input --out=output
-  pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=100 --estimator=zopfli,--in=input --out=output
-  pngwolf,--verbose-summary --strip-optional --max-stagnate-time=0 --max-evaluations=1000 --estimator=zopfli,--in=input --out=output
+  pngwolf,,--in=input --out=output
+  pngwolf, --estimator=libdeflate,--in=input --out=output
+  pngwolf, --estimator=zlib,--in=input --out=output
+  pngwolf, --estimator=zopfli,--in=input --out=output
 
   truepng,,output
   truepng,-o4,output
