@@ -436,34 +436,6 @@ start() {
 # http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
 
 
-separate() {
-  awk -v FS="," -v OFS=",\x1F" '
-  {
-    for (i = 1; i < NF; i++) {
-      printf "%s%s", $i, OFS
-      print $NF
-    }
-  }
-  '
-}
-
-
-colorize() {
-  awk -v FS="\x1F" '
-  function color(c, s) {
-    printf "\033[38;5;%dm%s\033[0m\n", c, s
-    next
-  }
-
-  NR == 1 { color(33, $0) }
-  $2 == 1 { color(255, $0) }
-  $2 == 2 { color(245, $0) }
-  $2 == 3 { color(240, $0) }
-  { color(240, $0) }
-  '
-}
-
-
 score() {
   awk -v FS="," -v OFS="," -v image="$1" -v test="$test" '
   $1 == image {
@@ -505,6 +477,34 @@ total() {
     }
   }
   ' output.txt
+}
+
+
+separate() {
+  awk -v FS="," -v OFS=",\x1F" '
+  {
+    for (i = 1; i < NF; i++) {
+      printf "%s%s", $i, OFS
+      print $NF
+    }
+  }
+  '
+}
+
+
+colorize() {
+  awk -v FS="\x1F" '
+  function color(c, s) {
+    printf "\033[38;5;%dm%s\033[0m\n", c, s
+    next
+  }
+
+  NR == 1 { color(33, $0) }
+  $2 == 1 { color(255, $0) }
+  $2 == 2 { color(245, $0) }
+  $2 == 3 { color(240, $0) }
+  { color(240, $0) }
+  '
 }
 
 
