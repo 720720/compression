@@ -194,11 +194,11 @@ wget "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg"
 
 # https://github.com/nathanaeljones/imaging-wiki
 
-imagemagick="imagemagick $(magick -version | awk 'NR==1 {print $3}')"
+imagemagick="imagemagick $(magick -version | awk 'NR==1{print $3}')"
 
 # https://en.wikipedia.org/wiki/GIF
 
-gifsicle="gifsicle $(gifsicle --version | awk 'NR==1 {print $3}')"
+gifsicle="gifsicle $(gifsicle --version | awk 'NR==1{print $3}')"
 
 # https://en.wikipedia.org/wiki/JPEG
 
@@ -216,12 +216,12 @@ ect="ect $(ect | awk '/Version/{print $2}')"
 optipng="optipng $(optipng -V | awk '/OptiPNG version/{print $3}')"
 oxipng="oxipng $(oxipng -V | awk '{print $2}')"
 # pingo="pingo $(pingo -V | awk '/pingo v/{print substr($2,2)}')"
-pngcrush="pngcrush $(pngcrush -version 2>&1 | awk -F, '/pngcrush/{print $1}' | awk -F' ' '{print $2}')"
+pngcrush="pngcrush $(pngcrush -version 2>&1 | awk -F' ' '/pngcrush/{print substr($2,1,length($2)-1)}')"
 pngoptimizercl="pngoptimizercl $(pngoptimizercl | awk 'NR==1{print $2}')"
 pngout="pngout 20200115"
 pngquant="pngquant $(pngquant -V | awk '{print $1}')"
 pngwolf="pngwolf $(pngwolf --version | awk 'NR==1{print $2}')"
-# truepng="truepng $(truepng | awk 'NR==1 {print $2}')"
+# truepng="truepng $(truepng | awk 'NR==1{print $2}')"
 zopflipng="zopflipng 1.0.3"
 
 # https://en.wikipedia.org/wiki/Scalable_Vector_Graphics
@@ -233,7 +233,7 @@ svgo="svgo $(svgo -v)"
 # https://en.wikipedia.org/wiki/Structural_similarity
 
 butteraugli="butteraugli 71b18b6"
-compare="compare $(compare -version | awk 'NR==1 {print $3}')"
+compare="compare $(compare -version | awk 'NR==1{print $3}')"
 ssimulacra="ssimulacra 375726b"
 
 
