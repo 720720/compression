@@ -437,7 +437,14 @@ start() {
 
 
 separate() {
-  awk -v FS="," -v OFS=",\x1F" '{for(i=1;i<NF;i++)printf "%s%s",$i,OFS;print $NF}'
+  awk -v FS="," -v OFS=",\x1F" '
+  {
+    for (i = 1; i < NF; i++) {
+      printf "%s%s", $i, OFS
+      print $NF
+    }
+  }
+  '
 }
 
 
