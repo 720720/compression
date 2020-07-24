@@ -464,8 +464,8 @@ colorize() {
 }
 
 
-image() {
-  awk -v FS="," -v OFS="," -v image="$1" -v test="$2" '
+score() {
+  awk -v FS="," -v OFS="," -v image="$1" -v test="$test" '
   $1 == image {
     if (p < 1) {
       print "compressor","number","size","saving","time",test
@@ -604,7 +604,7 @@ do
     i=$((i + 1))
   done
 
-  image "$image" "$test" | separate | column -s, -t | colorize
+  score "$image" | separate | column -s, -t | colorize
   echo
 
   tock
@@ -627,7 +627,7 @@ while IFS=, read -r image name format size dimensions type colorspace colors dep
 do
   printf "image: %s\nname: %s\nformat: %s\nsize: %s\ndimensions: %s\ntype: %s\ncolorspace: %s\ncolors: %s\ndepth: %s\ncompression: %s\nentropy: %s\n" "$image" "$name" "$format" "$size" "$dimensions" "$type" "$colorspace" "$colors" "$depth" "$compression" "$entropy" >> result.txt
   echo >> result.txt
-  image "$image" "$test" | column -s, -t >> result.txt
+  score "$image" | column -s, -t >> result.txt
   echo >> result.txt
 done < input.txt
 
