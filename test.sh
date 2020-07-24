@@ -281,12 +281,6 @@ trim svg.txt
 echo >> result.txt
 
 
-# https://unix.stackexchange.com/questions/40786/how-to-do-integer-float-calculations-in-bash-or-other-languages-frameworks
-# https://stackoverflow.com/questions/38595559/how-to-define-a-function-on-one-line
-
-calc() { awk "BEGIN{print $*}"; }
-
-
 # https://unix.stackexchange.com/questions/162619/to-print-execution-time-of-script-from-script
 # https://stackoverflow.com/questions/16959337/usr-bin-time-format-output-elapsed-time-in-milliseconds
 
