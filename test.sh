@@ -431,7 +431,7 @@ score() {
       p++
     }
 
-    for (i = 4; i <= NF; i++) { printf "%s%s", $i, ( i < NF ? OFS : ORS) | "sort -t, -k4gr -k5g -k2g" }
+    for (i = 4; i <= NF; i++) { printf "%s%s", $i, (i < NF ? OFS : ORS) | "sort -t, -k4gr -k5g -k2g" }
   }
   ' output.txt
 }
@@ -475,7 +475,7 @@ total() {
 separate() {
   awk -v FS="," -v OFS=",\x1F" '
   {
-    for (i = 1; i <= NF; i++) { printf "%s%s", $i, ( i < NF ? OFS : ORS) }
+    for (i = 1; i <= NF; i++) { printf "%s%s", $i, (i < NF ? OFS : ORS) }
   }
   '
 }
