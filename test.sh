@@ -346,7 +346,7 @@ start() {
     cp "$input" "$output"
   fi
 
-  compressor="$(awk -F, -v input="$input" -v compressor="$compressor" -v options="$options" 'BEGIN{if(options)compressor=compressor" "options}$3==input{compressor=$4" "compressor}END{print compressor}' output.txt)"
+  compressor=$(awk -F, -v input="$input" -v compressor="$compressor" -v options="$options" 'BEGIN{if(options)compressor=compressor" "options}$3==input{compressor=$4" "compressor}END{print compressor}' output.txt)
 
   timer="$(mktemp)"
   trap "rm -f $timer" EXIT HUP INT QUIT TERM
