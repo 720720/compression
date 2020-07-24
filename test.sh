@@ -420,6 +420,8 @@ start() {
 }
 
 
+# https://unix.stackexchange.com/questions/193324/sort-and-uniq-in-awk
+
 score() {
   awk -v FS="," -v OFS="," -v image="$1" -v test="$test" '
   $1 == image {
@@ -435,7 +437,6 @@ score() {
   }
   ' output.txt
 }
-
 
 total() {
   awk -v FS="," -v OFS="," -v f="$f" '
@@ -473,7 +474,6 @@ total() {
 # https://en.wikipedia.org/wiki/ANSI_escape_code
 # http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
 
-
 separate() {
   awk -v FS="," -v OFS=",\x1F" '
   {
@@ -484,7 +484,6 @@ separate() {
   }
   '
 }
-
 
 colorize() {
   awk -v FS="\x1F" '
@@ -502,13 +501,13 @@ colorize() {
 }
 
 
+# https://dwheeler.com/essays/filenames-in-shell.html
 # https://stackoverflow.com/questions/39319539/what-is-the-most-portable-way-to-write-an-iteration-for-while-loop-in-a-posi
 # https://davidwalsh.name/first-frame-animated-gif
 # https://imagemagick.org/script/identify.php
 # https://imagemagick.org/script/escape.php
 # https://imagemagick.org/script/command-line-processing.php
 # https://imagemagick.org/script/formats.php
-
 
 for file in ./*
 do
@@ -543,7 +542,6 @@ fi
 
 
 # http://www.theunixschool.com/2012/05/shell-read-text-or-csv-file-and-extract.html
-
 # https://stackoverflow.com/questions/415677/how-to-replace-placeholders-in-a-text-file
 # http://tldp.org/LDP/abs/html/ivr.html
 # http://ahmed.amayem.com/bash-indirect-expansion-exploration/
