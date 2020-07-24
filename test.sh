@@ -443,12 +443,16 @@ separate() {
 
 colorize() {
   awk -v FS="\x1F" '
-  function color(c,s) {printf("\033[38;5;%dm%s\033[0m\n",c,s);next;}
-  NR==1{color(33,$0)}
-  $2==1{color(255,$0)}
-  $2==2{color(245,$0)}
-  $2==3{color(240,$0)}
-  {color(240,$0)}
+  function color(c, s) {
+    printf "\033[38;5;%dm%s\033[0m\n", c, s
+    next
+  }
+
+  NR == 1 { color(33, $0) }
+  $2 == 1 { color(255, $0) }
+  $2 == 2 { color(245, $0) }
+  $2 == 3 { color(240, $0) }
+  { color(240, $0) }
   '
 }
 
