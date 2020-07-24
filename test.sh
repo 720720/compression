@@ -420,6 +420,7 @@ start() {
 }
 
 
+# https://stackoverflow.com/questions/25461806/how-to-print-a-range-of-columns-in-a-csv-in-awk
 # https://unix.stackexchange.com/questions/193324/sort-and-uniq-in-awk
 
 score() {
@@ -430,10 +431,7 @@ score() {
       p++
     }
 
-    r = ""
-    for (i = 4; i < NF; i++) { r = r $i OFS }
-    r = r $NF
-    print r | "sort -t, -k4gr -k5g -k2g"
+    for (i = 4; i <= NF; i++) { printf "%s%s", $i, ( i < NF ? OFS : ORS) | "sort -t, -k4gr -k5g -k2g" }
   }
   ' output.txt
 }
@@ -469,7 +467,6 @@ total() {
 # https://unix.stackexchange.com/questions/340091/why-the-output-of-column-is-misaligned-with-a-ansi-colored-input
 # https://stackoverflow.com/questions/11454343/pipe-output-to-bash-function
 # https://stackoverflow.com/questions/34497884/writing-a-shell-function-that-accepts-input-from-a-pipe-and-arguments-simultaneo
-# https://stackoverflow.com/questions/25461806/how-to-print-a-range-of-columns-in-a-csv-in-awk
 
 # https://github.com/seebi/dircolors-solarized
 # https://en.wikipedia.org/wiki/ANSI_escape_code
