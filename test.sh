@@ -420,16 +420,6 @@ start() {
 }
 
 
-# https://unix.stackexchange.com/questions/318755/shell-customize-the-color-of-each-line-of-a-log-file-based-on-a-pattern
-# https://unix.stackexchange.com/questions/340091/why-the-output-of-column-is-misaligned-with-a-ansi-colored-input
-# https://stackoverflow.com/questions/11454343/pipe-output-to-bash-function
-# https://stackoverflow.com/questions/34497884/writing-a-shell-function-that-accepts-input-from-a-pipe-and-arguments-simultaneo
-
-# https://github.com/seebi/dircolors-solarized
-# https://en.wikipedia.org/wiki/ANSI_escape_code
-# http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
-
-
 score() {
   awk -v FS="," -v OFS="," -v image="$1" -v test="$test" '
   $1 == image {
@@ -472,6 +462,16 @@ total() {
   }
   ' output.txt
 }
+
+
+# https://unix.stackexchange.com/questions/318755/shell-customize-the-color-of-each-line-of-a-log-file-based-on-a-pattern
+# https://unix.stackexchange.com/questions/340091/why-the-output-of-column-is-misaligned-with-a-ansi-colored-input
+# https://stackoverflow.com/questions/11454343/pipe-output-to-bash-function
+# https://stackoverflow.com/questions/34497884/writing-a-shell-function-that-accepts-input-from-a-pipe-and-arguments-simultaneo
+
+# https://github.com/seebi/dircolors-solarized
+# https://en.wikipedia.org/wiki/ANSI_escape_code
+# http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
 
 
 separate() {
