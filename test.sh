@@ -467,9 +467,9 @@ colorize() {
 image() {
   awk -v FS="," -v OFS="," -v image="$1" -v test="$2" '
   $1 == image {
-    if (i < 1) {
+    if (p < 1) {
       print "compressor","number","size","saving","time",test
-      i++
+      p++
     }
 
     r = ""
