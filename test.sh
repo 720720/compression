@@ -354,6 +354,7 @@ start() {
 
   if ! identify "${output}[0]" >/dev/null 2>&1
   then
+    printf '\033[91m%s\n\n\033[0m' "$output error"
     cat stdout.txt stderr.txt
     return
   fi
