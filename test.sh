@@ -531,7 +531,7 @@ done
 
 if [ ! -f input.txt ]
 then
-  echo "no images found"
+  printf '\033[91m%s\n\033[0m' "no images found"
   exit 1
 fi
 
