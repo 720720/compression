@@ -545,6 +545,8 @@ fi
 # https://stackoverflow.com/questions/15316569/linux-print-all-lines-in-a-file-not-starting-with
 # https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
 # https://stackoverflow.com/questions/2829613/how-do-you-tell-if-a-string-contains-another-string-in-posix-sh
+# https://unix.stackexchange.com/questions/104881/remove-particular-characters-from-a-variable-using-bash
+# https://pubs.opengroup.org/onlinepubs/9699919799/utilities/tr.html
 
 while IFS=, read -r image name format size dimensions type colorspace colors depth compression entropy
 do
@@ -580,8 +582,8 @@ do
           copy=0
         fi
 
-        output="${input%.*}_$(echo "$compressor $options" | tr -d '[ \-=] ').${input##*.}"
-        arguments="$(echo "$arguments" | sed "s/input/$input/" | sed "s/output/$output/")"
+        output="${input%.*}_$(printf '%s' "$compressor $options" | tr -cd '[:alnum:]').${input##*.}"
+        arguments="$(printf '%s' "$arguments" | sed "s/input/$input/" | sed "s/output/$output/")"
         command="$compressor $options $arguments"
 
         start "$i" "$image" "$format" "$compressor" "$options" "$command" "$input" "$output" "$copy"
