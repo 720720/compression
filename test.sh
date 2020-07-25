@@ -544,6 +544,7 @@ fi
 # https://stackoverflow.com/questions/399078/what-special-characters-must-be-escaped-in-regular-expressions
 # https://stackoverflow.com/questions/15316569/linux-print-all-lines-in-a-file-not-starting-with
 # https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
+# https://stackoverflow.com/questions/2829613/how-do-you-tell-if-a-string-contains-another-string-in-posix-sh
 
 while IFS=, read -r image name format size dimensions type colorspace colors depth compression entropy
 do
