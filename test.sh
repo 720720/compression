@@ -262,8 +262,8 @@ trim() {
 
       if ! grep -qw "$compressor" result.txt
       then
-        string=$(echo "$compressor" | tr -d -)
-        eval echo "\$$string" >> result.txt
+        eval string="\$$(printf '%s' "$compressor" | tr -d -)"
+        printf '%s\n' "$string" >> result.txt
       fi
     else
       printf '\033[91m%s\n\n\033[0m' "$compressor not available"
