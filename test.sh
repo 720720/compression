@@ -572,11 +572,11 @@ do
     do
       while IFS=, read -r compressor options arguments
       do
-        if echo "$arguments" | grep -qw input && echo "$arguments" | grep -qw output
+        if [ "${arguments#*input*}" = "$arguments" ]
         then
-          copy=0
-        else
           copy=1
+        else
+          copy=0
         fi
 
         output="${input%.*}_$(echo "$compressor $options" | tr -d '[ \-=] ').${input##*.}"
