@@ -326,7 +326,7 @@ start() {
 
   if grep -q ",$output," output.txt
   then
-    echo "$output" >> out.txt
+    printf '%s\n' "$output" >> out.txt
     return
   fi
 
@@ -367,57 +367,57 @@ start() {
 
   delta="$test"
 
-  if echo "$delta" | grep -qw butteraugli
+  if printf '%s' "$delta" | grep -qw butteraugli
   then
     butteraugli="$(butteraugli "$image" "$output")"
-    delta="$(echo "$delta" | sed "s/\<butteraugli\>/$butteraugli/")"
+    delta="$(printf '%s' "$delta" | sed "s/\<butteraugli\>/$butteraugli/")"
   fi
 
-  if echo "$delta" | grep -qw ssimulacra
+  if printf '%s' "$delta" | grep -qw ssimulacra
   then
     ssimulacra="$(ssimulacra "$image" "$output")"
-    delta="$(echo "$delta" | sed "s/\<ssimulacra\>/$ssimulacra/")"
+    delta="$(printf '%s' "$delta" | sed "s/\<ssimulacra\>/$ssimulacra/")"
   fi
 
-  if echo "$delta" | grep -qw ssim
+  if printf '%s' "$delta" | grep -qw ssim
   then
     ssim="$(compare -metric ssim "$image" "$output" null: 2>&1 || true)"
-    delta="$(echo "$delta" | sed "s/\<ssim\>/$ssim/")"
+    delta="$(printf '%s' "$delta" | sed "s/\<ssim\>/$ssim/")"
   fi
 
-  if echo "$delta" | grep -qw dssim
+  if printf '%s' "$delta" | grep -qw dssim
   then
     dssim="$(compare -metric dssim "$image" "$output" null: 2>&1 || true)"
-    delta="$(echo "$delta" | sed "s/\<dssim\>/$dssim/")"
+    delta="$(printf '%s' "$delta" | sed "s/\<dssim\>/$dssim/")"
   fi
 
-  if echo "$delta" | grep -qw psnr
+  if printf '%s' "$delta" | grep -qw psnr
   then
     psnr="$(compare -metric psnr "$image" "$output" null: 2>&1 || true)"
-    delta="$(echo "$delta" | sed "s/\<psnr\>/$psnr/")"
+    delta="$(printf '%s' "$delta" | sed "s/\<psnr\>/$psnr/")"
   fi
 
-  if echo "$delta" | grep -qw mae
+  if printf '%s' "$delta" | grep -qw mae
   then
     mae="$(compare -metric mae "$image" "$output" null: 2>&1 || true)"
-    delta="$(echo "$delta" | sed "s/\<mae\>/$mae/")"
+    delta="$(printf '%s' "$delta" | sed "s/\<mae\>/$mae/")"
   fi
 
-  if echo "$delta" | grep -qw fuzz
+  if printf '%s' "$delta" | grep -qw fuzz
   then
     fuzz="$(compare -metric fuzz "$image" "$output" null: 2>&1 || true)"
-    delta="$(echo "$delta" | sed "s/\<fuzz\>/$fuzz/")"
+    delta="$(printf '%s' "$delta" | sed "s/\<fuzz\>/$fuzz/")"
   fi
 
-  if echo "$delta" | grep -qw ncc
+  if printf '%s' "$delta" | grep -qw ncc
   then
     ncc="$(compare -metric ncc "$image" "$output" null: 2>&1 || true)"
-    delta="$(echo "$delta" | sed "s/\<ncc\>/$ncc/")"
+    delta="$(printf '%s' "$delta" | sed "s/\<ncc\>/$ncc/")"
   fi
 
 
-  echo "$image,$format,$output,$compressor,$number,$size,$saving,$time,$delta" >> output.txt
-  echo "$output" >> out.txt
+  printf '%s\n' "$image,$format,$output,$compressor,$number,$size,$saving,$time,$delta" >> output.txt
+  printf '%s\n' "$output" >> out.txt
 }
 
 
@@ -525,7 +525,7 @@ do
       compression="$(identify -format "%C" "${file}[0]")"
       entropy="$(identify -format "%[entropy]" "${file}[0]")"
 
-      echo "$image,$name,$format,$size,$dimensions,$type,$colorspace,$colors,$depth,$compression,$entropy" >> input.txt
+      printf '%s\n' "$image,$name,$format,$size,$dimensions,$type,$colorspace,$colors,$depth,$compression,$entropy" >> input.txt
     fi
   fi
 done
@@ -557,7 +557,7 @@ do
   printf "image: %s\nname: %s\nformat: %s\nsize: %s\ndimensions: %s\ntype: %s\ncolorspace: %s\ncolors: %s\ndepth: %s\ncompression: %s\nentropy: %s\n" "$image" "$name" "$format" "$size" "$dimensions" "$type" "$colorspace" "$colors" "$depth" "$compression" "$entropy"
   echo
 
-  echo "$image" > in.txt
+  printf '%s\n' "$image" > in.txt
 
   case $format in
     GIF) commands="gif.txt" ;;
