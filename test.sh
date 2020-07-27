@@ -103,9 +103,9 @@ optipng,-o7,output
   pngquant,,output
 
   pngwolf,,--in=input --out=output
-  pngwolf, --estimator=libdeflate,--in=input --out=output
-  pngwolf, --estimator=zlib,--in=input --out=output
-  pngwolf, --estimator=zopfli,--in=input --out=output
+  pngwolf,--estimator=libdeflate,--in=input --out=output
+  pngwolf,--estimator=zlib,--in=input --out=output
+  pngwolf,--estimator=zopfli,--in=input --out=output
 
   truepng,,output
   truepng,-o4,output
