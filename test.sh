@@ -121,16 +121,16 @@ svgo,,-i input -o output
 EOF
 
 cat > sim.txt <<'EOF'
-butteraugli,butteraugli,$1 $2
+butteraugli,butteraugli,$1 $2 2>/dev/null
 
-ssimulacra,ssimulacra,$1 $2
+ssimulacra,ssimulacra,$1 $2 2>/dev/null
 
-ssim,compare,-metric ssim $1 $2 null: 2>&1 || true
-dssim,compare,-metric dssim $1 $2 null: 2>&1 || true
-psnr,compare,-metric psnr $1 $2 null: 2>&1 || true
-mae,compare,-metric mae $1 $2 null: 2>&1 || true
-fuzz,compare,-metric fuzz $1 $2 null: 2>&1 || true
-ncc,compare,-metric ncc $1 $2 null: 2>&1 || true
+ssim,compare,-metric ssim $1 $2 null: 2>&1
+dssim,compare,-metric dssim $1 $2 null: 2>&1
+psnr,compare,-metric psnr $1 $2 null: 2>&1
+mae,compare,-metric mae $1 $2 null: 2>&1
+fuzz,compare,-metric fuzz $1 $2 null: 2>&1
+ncc,compare,-metric ncc $1 $2 null: 2>&1
 EOF
 
 
@@ -309,7 +309,8 @@ sim() {
   while IFS=, read -r name command arguments
   do
     test="${test:+${test},}${name}"
-    line="${line:+${line},}$(eval "$command $arguments")"
+    eval="$(eval "$command $arguments" || true)"
+    line="${line:+${line},}${eval:- }"
   done < sim.csv
 }
 
