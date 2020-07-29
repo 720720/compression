@@ -8,11 +8,6 @@ set -eu
 iterations=2
 
 
-# test="butteraugli,ssimulacra,ssim,dssim,psnr,mae,fuzz,ncc"
-
-test="ssim"
-
-
 # tmp
 
 tmp=$(mktemp -d)
@@ -28,7 +23,7 @@ fi
 cd "$tmp"
 
 
-# compression
+# commands
 
 cat > gif.txt <<'EOF'
   gifsicle,,input -o output
@@ -123,6 +118,19 @@ scour,,input output
 svgcleaner,,input output
 
 svgo,,-i input -o output
+EOF
+
+cat > sim.txt <<'EOF'
+butteraugli,butteraugli,$1 $2
+
+ssimulacra,ssimulacra,$1 $2
+
+ssim,compare,-metric ssim $1 $2 null: 2>&1 || true
+dssim,compare,-metric dssim $1 $2 null: 2>&1 || true
+psnr,compare,-metric psnr $1 $2 null: 2>&1 || true
+mae,compare,-metric mae $1 $2 null: 2>&1 || true
+fuzz,compare,-metric fuzz $1 $2 null: 2>&1 || true
+ncc,compare,-metric ncc $1 $2 null: 2>&1 || true
 EOF
 
 
@@ -281,6 +289,31 @@ trim svg.txt
 echo >> result.txt
 
 
+# https://stackoverflow.com/questions/11117493/how-to-delete-the-rows-that-start-with-c-with-awk
+# https://stackoverflow.com/questions/16414410/delete-empty-lines-using-sed
+# https://stackoverflow.com/questions/14634349/calling-an-executable-program-using-awk
+# https://stackoverflow.com/questions/20646819/how-can-i-pass-variables-from-awk-to-a-shell-command
+
+awk -F, '/^[[:alpha:]]/{if(!system("command -v "$2" >/dev/null 2>&1")){print}}' sim.txt > sim.csv
+
+
+# https://chris-lamb.co.uk/posts/joining-strings-in-posix-shell
+# https://unix.stackexchange.com/questions/444946/how-can-we-run-a-command-stored-in-a-variable
+# https://unix.stackexchange.com/questions/416571/why-is-using-eval-necessary-to-pass-quoted-arguments
+# https://stackoverflow.com/questions/13122441/how-do-i-read-a-variable-on-a-while-loop
+
+sim() {
+  test=""
+  line=""
+
+  while IFS=, read -r name command arguments
+  do
+    test="${test:+${test},}${name}"
+    line="${line:+${line},}$(eval "$command $arguments")"
+  done < sim.csv
+}
+
+
 # https://unix.stackexchange.com/questions/162619/to-print-execution-time-of-script-from-script
 # https://stackoverflow.com/questions/16959337/usr-bin-time-format-output-elapsed-time-in-milliseconds
 
@@ -364,59 +397,9 @@ start() {
   saving=$(awk -v size="$size" -v byte="$byte" 'BEGIN{print (1-size/byte)*100}')
   time=$(awk -F, -v input="$input" -v start="$start" -v stop="$stop" 'BEGIN{time=(stop-start)/1000000000}$3==input{time+=$8}END{print time}' output.txt)
 
+  sim "$image" "$output"
 
-  delta="$test"
-
-  if printf '%s' "$delta" | grep -qw butteraugli
-  then
-    butteraugli="$(butteraugli "$image" "$output")"
-    delta="$(printf '%s' "$delta" | sed "s/\<butteraugli\>/$butteraugli/")"
-  fi
-
-  if printf '%s' "$delta" | grep -qw ssimulacra
-  then
-    ssimulacra="$(ssimulacra "$image" "$output")"
-    delta="$(printf '%s' "$delta" | sed "s/\<ssimulacra\>/$ssimulacra/")"
-  fi
-
-  if printf '%s' "$delta" | grep -qw ssim
-  then
-    ssim="$(compare -metric ssim "$image" "$output" null: 2>&1 || true)"
-    delta="$(printf '%s' "$delta" | sed "s/\<ssim\>/$ssim/")"
-  fi
-
-  if printf '%s' "$delta" | grep -qw dssim
-  then
-    dssim="$(compare -metric dssim "$image" "$output" null: 2>&1 || true)"
-    delta="$(printf '%s' "$delta" | sed "s/\<dssim\>/$dssim/")"
-  fi
-
-  if printf '%s' "$delta" | grep -qw psnr
-  then
-    psnr="$(compare -metric psnr "$image" "$output" null: 2>&1 || true)"
-    delta="$(printf '%s' "$delta" | sed "s/\<psnr\>/$psnr/")"
-  fi
-
-  if printf '%s' "$delta" | grep -qw mae
-  then
-    mae="$(compare -metric mae "$image" "$output" null: 2>&1 || true)"
-    delta="$(printf '%s' "$delta" | sed "s/\<mae\>/$mae/")"
-  fi
-
-  if printf '%s' "$delta" | grep -qw fuzz
-  then
-    fuzz="$(compare -metric fuzz "$image" "$output" null: 2>&1 || true)"
-    delta="$(printf '%s' "$delta" | sed "s/\<fuzz\>/$fuzz/")"
-  fi
-
-  if printf '%s' "$delta" | grep -qw ncc
-  then
-    ncc="$(compare -metric ncc "$image" "$output" null: 2>&1 || true)"
-    delta="$(printf '%s' "$delta" | sed "s/\<ncc\>/$ncc/")"
-  fi
-
-
-  printf '%s\n' "$image,$format,$output,$compressor,$number,$size,$saving,$time,$delta" >> output.txt
+  printf '%s\n' "$image,$format,$output,$compressor,$number,$size,$saving,$time,$line" >> output.txt
   printf '%s\n' "$output" >> out.txt
 }
 
