@@ -340,71 +340,6 @@ two() {
 }
 
 
-# https://unix.stackexchange.com/questions/102008/how-do-i-trim-leading-and-trailing-whitespace-from-each-line-of-some-output
-# https://stackoverflow.com/questions/20262869/why-does-1-in-awk-print-the-current-line
-# https://unix.stackexchange.com/questions/118433/quoting-within-command-substitution-in-bash
-# https://www.tecmint.com/empty-delete-file-content-linux/
-# https://www.regular-expressions.info/wordboundaries.html
-# https://stackoverflow.com/questions/30224018/imagemagick-compare-exit-code-1-when-spawned-from-node-js-but-exit-code-0-when
-
-start() {
-  number="$1"
-  image="$2"
-  format="$3"
-  compressor="$4"
-  options="$5"
-  command="$6"
-  input="$7"
-  output="$8"
-  copy="$9"
-
-  if grep -q ",$output," output.txt
-  then
-    printf '%s\n' "$output" >> out.txt
-    return
-  fi
-
-  if grep -q ",$input,.*$compressor" output.txt
-  then
-    return
-  fi
-
-  if [ "$copy" -eq 1 ]
-  then
-    cp "$input" "$output"
-  fi
-
-  compressor=$(awk -F, -v input="$input" -v compressor="$compressor" -v options="$options" 'BEGIN{if(options)compressor=compressor" "options}$3==input{compressor=$4" "compressor}END{print compressor}' output.txt)
-
-  timer="$(mktemp)"
-  trap "rm -f $timer" EXIT HUP INT QUIT TERM
-  one "$timer" "$compressor" &
-
-  start=$(date +%s%N)
-  eval "$command" 1>stdout.txt 2>stderr.txt
-  stop=$(date +%s%N)
-
-  two "$timer"
-
-  if ! identify "${output}[0]" >/dev/null 2>&1
-  then
-    printf '\033[91m%s\n\n\033[0m' "$output error"
-    cat stdout.txt stderr.txt
-    return
-  fi
-
-  byte=$(wc -c < "$image")
-  size=$(wc -c < "$output")
-  saving=$(awk -v size="$size" -v byte="$byte" 'BEGIN{print (1-size/byte)*100}')
-  time=$(awk -F, -v input="$input" -v start="$start" -v stop="$stop" 'BEGIN{time=(stop-start)/1000000000}$3==input{time+=$8}END{print time}' output.txt)
-
-  sim "$image" "$output"
-
-  printf '%s\n' "$image,$format,$output,$compressor,$number,$size,$saving,$time,$line" >> output.txt
-  printf '%s\n' "$output" >> out.txt
-}
-
-
 # https://stackoverflow.com/questions/25461806/how-to-print-a-range-of-columns-in-a-csv-in-awk
 # https://unix.stackexchange.com/questions/193324/sort-and-uniq-in-awk
 # https://stackoverflow.com/questions/2013547/assigning-default-values-to-shell-variables-with-a-single-command-in-bash
@@ -522,6 +457,71 @@ then
   printf '\033[91m%s\n\033[0m' "no images found"
   exit 1
 fi
+
+
+# https://unix.stackexchange.com/questions/102008/how-do-i-trim-leading-and-trailing-whitespace-from-each-line-of-some-output
+# https://stackoverflow.com/questions/20262869/why-does-1-in-awk-print-the-current-line
+# https://unix.stackexchange.com/questions/118433/quoting-within-command-substitution-in-bash
+# https://www.tecmint.com/empty-delete-file-content-linux/
+# https://www.regular-expressions.info/wordboundaries.html
+# https://stackoverflow.com/questions/30224018/imagemagick-compare-exit-code-1-when-spawned-from-node-js-but-exit-code-0-when
+
+start() {
+  number="$1"
+  image="$2"
+  format="$3"
+  compressor="$4"
+  options="$5"
+  command="$6"
+  input="$7"
+  output="$8"
+  copy="$9"
+
+  if grep -q ",$output," output.txt
+  then
+    printf '%s\n' "$output" >> out.txt
+    return
+  fi
+
+  if grep -q ",$input,.*$compressor" output.txt
+  then
+    return
+  fi
+
+  if [ "$copy" -eq 1 ]
+  then
+    cp "$input" "$output"
+  fi
+
+  compressor=$(awk -F, -v input="$input" -v compressor="$compressor" -v options="$options" 'BEGIN{if(options)compressor=compressor" "options}$3==input{compressor=$4" "compressor}END{print compressor}' output.txt)
+
+  timer="$(mktemp)"
+  trap "rm -f $timer" EXIT HUP INT QUIT TERM
+  one "$timer" "$compressor" &
+
+  start=$(date +%s%N)
+  eval "$command" 1>stdout.txt 2>stderr.txt
+  stop=$(date +%s%N)
+
+  two "$timer"
+
+  if ! identify "${output}[0]" >/dev/null 2>&1
+  then
+    printf '\033[91m%s\n\n\033[0m' "$output error"
+    cat stdout.txt stderr.txt
+    return
+  fi
+
+  byte=$(wc -c < "$image")
+  size=$(wc -c < "$output")
+  saving=$(awk -v size="$size" -v byte="$byte" 'BEGIN{print (1-size/byte)*100}')
+  time=$(awk -F, -v input="$input" -v start="$start" -v stop="$stop" 'BEGIN{time=(stop-start)/1000000000}$3==input{time+=$8}END{print time}' output.txt)
+
+  sim "$image" "$output"
+
+  printf '%s\n' "$image,$format,$output,$compressor,$number,$size,$saving,$time,$line" >> output.txt
+  printf '%s\n' "$output" >> out.txt
+}
 
 
 # http://www.theunixschool.com/2012/05/shell-read-text-or-csv-file-and-extract.html
