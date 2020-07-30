@@ -493,11 +493,11 @@ start() {
     cp "$input" "$output"
   fi
 
-  compressor=$(awk -F, -v input="$input" -v compressor="$compressor" -v options="$options" 'BEGIN{if(options)compressor=compressor" "options}$3==input{compressor=$4" "compressor}END{print compressor}' output.txt)
+  compression=$(awk -F, -v input="$input" -v compressor="$compressor" -v options="$options" 'BEGIN{if(options)compressor=compressor" "options}$3==input{compressor=$4" "compressor}END{print compressor}' output.txt)
 
   timer="$(mktemp)"
   trap "rm -f $timer" EXIT HUP INT QUIT TERM
-  one "$timer" "$compressor" &
+  one "$timer" "$compression" &
 
   start=$(date +%s%N)
   eval "$command" 1>stdout.txt 2>stderr.txt
@@ -519,7 +519,7 @@ start() {
 
   sim "$image" "$output"
 
-  printf '%s\n' "$image,$format,$output,$compressor,$number,$size,$saving,$time,$line" >> output.txt
+  printf '%s\n' "$image,$format,$output,$compression,$number,$size,$saving,$time,$line" >> output.txt
   printf '%s\n' "$output" >> out.txt
 }
 
