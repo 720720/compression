@@ -407,9 +407,12 @@ start() {
 
 # https://stackoverflow.com/questions/25461806/how-to-print-a-range-of-columns-in-a-csv-in-awk
 # https://unix.stackexchange.com/questions/193324/sort-and-uniq-in-awk
+# https://stackoverflow.com/questions/2013547/assigning-default-values-to-shell-variables-with-a-single-command-in-bash
+# https://stackoverflow.com/questions/48218775/whats-the-difference-between-and-in-bash-parameter-substitution
+# https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_02
 
 score() {
-  awk -v FS="," -v OFS="," -v image="$1" -v test="$test" '
+  awk -v FS="," -v OFS="," -v image="$1" -v test="${test:-}" '
   $1 == image {
     if (p < 1) {
       print "compressor","number","size","saving","time",test
