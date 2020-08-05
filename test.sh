@@ -474,7 +474,7 @@ start() {
   format="$3"
   compressor="$4"
   options="$5"
-  command="$6"
+  arguments="$6"
   input="$7"
   output="$8"
   copy="$9"
@@ -502,7 +502,7 @@ start() {
   one "$timer" "$compression" &
 
   start=$(date +%s%N)
-  eval "$command" 1>stdout.txt 2>stderr.txt
+  eval "$compressor $options $arguments" 1>stdout.txt 2>stderr.txt
   stop=$(date +%s%N)
 
   two "$timer"
@@ -573,9 +573,8 @@ do
 
         output="${input%.*}_$(printf '%s' "$compressor $options" | tr -cd '[:alnum:]').${input##*.}"
         arguments="$(printf '%s' "$arguments" | sed "s/input/$input/" | sed "s/output/$output/")"
-        command="$compressor $options $arguments"
 
-        start "$i" "$image" "$format" "$compressor" "$options" "$command" "$input" "$output" "$copy"
+        start "$i" "$image" "$format" "$compressor" "$options" "$arguments" "$input" "$output" "$copy"
       done < "$commands"
     done < in.txt
 
