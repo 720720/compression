@@ -564,11 +564,11 @@ do
     do
       while IFS=, read -r command options arguments
       do
-        if [ "${arguments#*input*}" = "$arguments" ]
+        if printf '%s' "$arguments" | grep -qw input
         then
-          copy=1
-        else
           copy=0
+        else
+          copy=1
         fi
 
         output="${input%.*}_$(printf '%s' "$command $options" | tr -cd '[:alnum:]').${input##*.}"
