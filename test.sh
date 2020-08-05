@@ -91,6 +91,8 @@ optipng,-o7,output
   pingo,-s7,output
   pingo,-s8,output
 
+  pngcrush,,input output
+
   pngoptimizercl,,output
 
   pngout,,input output
