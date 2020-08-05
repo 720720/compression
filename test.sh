@@ -264,19 +264,19 @@ trim() {
   sed -i '/^\s*$/d' tmp.txt
   sed -i '/^ /d' tmp.txt
 
-  while IFS=, read -r compressor options arguments
+  while IFS=, read -r command options arguments
   do
-    if command -v "$compressor" >/dev/null 2>&1
+    if command -v "$command" >/dev/null 2>&1
     then
-      printf '%s,%s,%s\n' "$compressor" "$options" "$arguments" >> "$1"
+      printf '%s,%s,%s\n' "$command" "$options" "$arguments" >> "$1"
 
-      if ! grep -qw "$compressor" result.txt
+      if ! grep -qw "$command" result.txt
       then
-        eval string="\$$(printf '%s' "$compressor" | tr -d -)"
+        eval string="\$$(printf '%s' "$command" | tr -d -)"
         printf '%s\n' "$string" >> result.txt
       fi
     else
-      printf '\033[91m%s\n\n\033[0m' "$compressor not available"
+      printf '\033[91m%s\n\n\033[0m' "$command not available"
     fi
   done < tmp.txt
 
@@ -352,7 +352,7 @@ score() {
   awk -v FS="," -v OFS="," -v image="$1" -v test="${test:-}" '
   $1 == image {
     if (p < 1) {
-      print "compressor","number","size","saving","time",test
+      print "command","number","size","saving","time",test
       p++
     }
 
@@ -375,7 +375,7 @@ total() {
 
   END {
     if (NR > 0) {
-      print "compressor,number,processed,compressed,size,saving,time"
+      print "command,number,processed,compressed,size,saving,time"
 
       for (i in processed) {
         if (format[i] == f) {
@@ -472,7 +472,7 @@ start() {
   number="$1"
   image="$2"
   format="$3"
-  compressor="$4"
+  command="$4"
   options="$5"
   arguments="$6"
   input="$7"
@@ -485,7 +485,7 @@ start() {
     return
   fi
 
-  if grep -q ",$input,.*$compressor" output.txt
+  if grep -q ",$input,.*$command" output.txt
   then
     return
   fi
@@ -495,14 +495,14 @@ start() {
     cp "$input" "$output"
   fi
 
-  compression=$(awk -F, -v input="$input" -v compressor="$compressor" -v options="$options" 'BEGIN{if(options)compressor=compressor" "options}$3==input{compressor=$4" "compressor}END{print compressor}' output.txt)
+  compression=$(awk -F, -v input="$input" -v command="$command" -v options="$options" 'BEGIN{if(options)command=command" "options}$3==input{command=$4" "command}END{print command}' output.txt)
 
   timer="$(mktemp)"
   trap "rm -f $timer" EXIT HUP INT QUIT TERM
   one "$timer" "$compression" &
 
   start=$(date +%s%N)
-  eval "$compressor $options $arguments" 1>stdout.txt 2>stderr.txt
+  eval "$command $options $arguments" 1>stdout.txt 2>stderr.txt
   stop=$(date +%s%N)
 
   two "$timer"
@@ -562,7 +562,7 @@ do
 
     while read -r input
     do
-      while IFS=, read -r compressor options arguments
+      while IFS=, read -r command options arguments
       do
         if [ "${arguments#*input*}" = "$arguments" ]
         then
@@ -571,10 +571,10 @@ do
           copy=0
         fi
 
-        output="${input%.*}_$(printf '%s' "$compressor $options" | tr -cd '[:alnum:]').${input##*.}"
+        output="${input%.*}_$(printf '%s' "$command $options" | tr -cd '[:alnum:]').${input##*.}"
         arguments="$(printf '%s' "$arguments" | sed "s/input/$input/" | sed "s/output/$output/")"
 
-        start "$i" "$image" "$format" "$compressor" "$options" "$arguments" "$input" "$output" "$copy"
+        start "$i" "$image" "$format" "$command" "$options" "$arguments" "$input" "$output" "$copy"
       done < "$commands"
     done < in.txt
 
