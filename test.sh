@@ -26,113 +26,113 @@ cd "$tmp"
 # commands
 
 cat > gif.txt <<'EOF'
-  gifsicle,,input -o output
-  gifsicle,-O1,input -o output
-  gifsicle,-O2,input -o output
-gifsicle,-O3,input -o output
+  gifsicle,,"$input" -o "$output"
+  gifsicle,-O1,"$input" -o "$output"
+  gifsicle,-O2,"$input" -o "$output"
+gifsicle,-O3,"$input" -o "$output"
 EOF
 
 cat > jpg.txt <<'EOF'
-  guetzli,,input output
-  guetzli,--quality 84,input output
-  guetzli,--quality 95,input output
+  guetzli,,"$input" "$output"
+  guetzli,--quality 84,"$input" "$output"
+  guetzli,--quality 95,"$input" "$output"
 
-mozjpeg-cjpeg,,input > output
-  mozjpeg-cjpeg,-quality 75,input > output
-  mozjpeg-cjpeg,-quality 90,input > output
+mozjpeg-cjpeg,,"$input" > "$output"
+  mozjpeg-cjpeg,-quality 75,"$input" > "$output"
+  mozjpeg-cjpeg,-quality 90,"$input" > "$output"
 EOF
 
 cat > png.txt <<'EOF'
-  advdef,-z1,output
-  advdef,-z2,output
-  advdef,-z3,output
-advdef,-z4,output
+  advdef,-z1,"$output"
+  advdef,-z2,"$output"
+  advdef,-z3,"$output"
+advdef,-z4,"$output"
 
-  advpng,-z1,output
-  advpng,-z2,output
-  advpng,-z3,output
-  advpng,-z4,output
+  advpng,-z1,"$output"
+  advpng,-z2,"$output"
+  advpng,-z3,"$output"
+  advpng,-z4,"$output"
 
-  ect,,output
-  ect,-1 -s,output
-  ect,-2 -s,output
-  ect,-3 -s,output
-  ect,-4 -s,output
-  ect,-5 -s,output
-  ect,-6 -s,output
-  ect,-7 -s,output
-  ect,-8 -s,output
-  ect,-9 -s,output
+  ect,,"$output"
+  ect,-1 -s,"$output"
+  ect,-2 -s,"$output"
+  ect,-3 -s,"$output"
+  ect,-4 -s,"$output"
+  ect,-5 -s,"$output"
+  ect,-6 -s,"$output"
+  ect,-7 -s,"$output"
+  ect,-8 -s,"$output"
+  ect,-9 -s,"$output"
 
-  optipng,,output
-  optipng,-o1,output
-  optipng,-o2,output
-  optipng,-o3,output
-  optipng,-o4,output
-  optipng,-o5,output
-  optipng,-o6,output
-optipng,-o7,output
+  optipng,,"$output"
+  optipng,-o1,"$output"
+  optipng,-o2,"$output"
+  optipng,-o3,"$output"
+  optipng,-o4,"$output"
+  optipng,-o5,"$output"
+  optipng,-o6,"$output"
+optipng,-o7,"$output"
 
-  oxipng,,output
-  oxipng,-o1,output
-  oxipng,-o2,output
-  oxipng,-o3,output
-  oxipng,-o4,output
-  oxipng,-o5,output
-  oxipng,-o6,output
-  oxipng,-o6 -Z,output
+  oxipng,,"$output"
+  oxipng,-o1,"$output"
+  oxipng,-o2,"$output"
+  oxipng,-o3,"$output"
+  oxipng,-o4,"$output"
+  oxipng,-o5,"$output"
+  oxipng,-o6,"$output"
+  oxipng,-o6 -Z,"$output"
 
-  pingo,-s1,output
-  pingo,-s2,output
-  pingo,-s3,output
-  pingo,-s4,output
-  pingo,-s5,output
-  pingo,-s6,output
-  pingo,-s7,output
-  pingo,-s8,output
+  pingo,-s1,"$output"
+  pingo,-s2,"$output"
+  pingo,-s3,"$output"
+  pingo,-s4,"$output"
+  pingo,-s5,"$output"
+  pingo,-s6,"$output"
+  pingo,-s7,"$output"
+  pingo,-s8,"$output"
 
-  pngcrush,,input output
+  pngcrush,,"$input" "$output"
 
-  pngoptimizercl,,output
+  pngoptimizercl,,"$output"
 
-  pngout,,input output
+  pngout,,"$input" "$output"
 
-  pngquant,,output
+  pngquant,,"$output"
 
-  pngwolf,,--in=input --out=output
-  pngwolf,--estimator=libdeflate,--in=input --out=output
-  pngwolf,--estimator=zlib,--in=input --out=output
-  pngwolf,--estimator=zopfli,--in=input --out=output
+  pngwolf,,--in="$input" --out="$output"
+  pngwolf,--estimator=libdeflate,--in="$input" --out="$output"
+  pngwolf,--estimator=zlib,--in="$input" --out="$output"
+  pngwolf,--estimator=zopfli,--in="$input" --out="$output"
 
-  truepng,,output
-  truepng,-o4,output
+  truepng,,"$output"
+  truepng,-o4,"$output"
 
-  zopflipng,,input output
-  zopflipng,-m,input output
-  zopflipng,--iterations=10,input output
-  zopflipng,--iterations=100,input output
-  zopflipng,--iterations=1000,input output
+  zopflipng,,"$input" "$output"
+  zopflipng,-m,"$input" "$output"
+  zopflipng,--iterations=10,"$input" "$output"
+  zopflipng,--iterations=100,"$input" "$output"
+  zopflipng,--iterations=1000,"$input" "$output"
 EOF
 
 cat > svg.txt <<'EOF'
-scour,,input output
+scour,,"$input" "$output"
 
-svgcleaner,,input output
+svgcleaner,,"$input" "$output"
 
-svgo,,-i input -o output
+svgo,,-i "$input" -o "$output"
 EOF
 
 cat > sim.txt <<'EOF'
-butteraugli,butteraugli,$1 $2 2>/dev/null
+butteraugli,butteraugli,"$1" "$2" 2>/dev/null
 
-ssimulacra,ssimulacra,$1 $2 2>/dev/null
+ssimulacra,ssimulacra,"$1" "$2" 2>/dev/null
 
-ssim,compare,-metric ssim $1 $2 null: 2>&1
-dssim,compare,-metric dssim $1 $2 null: 2>&1
-psnr,compare,-metric psnr $1 $2 null: 2>&1
-mae,compare,-metric mae $1 $2 null: 2>&1
-fuzz,compare,-metric fuzz $1 $2 null: 2>&1
-ncc,compare,-metric ncc $1 $2 null: 2>&1
+ssim,compare,-metric ssim "$1" "$2" null: 2>&1
+dssim,compare,-metric dssim "$1" "$2" null: 2>&1
+psnr,compare,-metric psnr "$1" "$2" null: 2>&1
+mae,compare,-metric mae "$1" "$2" null: 2>&1
+fuzz,compare,-metric fuzz "$1" "$2" null: 2>&1
+ncc,compare,-metric ncc "$1" "$2" null: 2>&1
 EOF
 
 
@@ -572,7 +572,6 @@ do
         fi
 
         output="${input%.*}_$(printf '%s' "$command $options" | tr -cd '[:alnum:]').${input##*.}"
-        arguments="$(printf '%s' "$arguments" | sed "s/input/$input/" | sed "s/output/$output/")"
 
         start "$i" "$image" "$format" "$command" "$options" "$arguments" "$input" "$output" "$copy"
       done < "$commands"
